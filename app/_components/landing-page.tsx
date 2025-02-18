@@ -28,7 +28,7 @@ const  router = useRouter();
                         {["Home", "About", "Contact", "Login"].map((item) => (
                             <motion.li
                                 key={item}
-                                onClick={() => item   === "Login" ? router.push("/signin") : route.push("/")}
+                                onClick={() => item   === "Login" ? router.push("/signin") : router.push("/")}
                                 whileHover={{ scale: 1.5 , color: "#f8f8f8" , transition: { duration: 0.3 } ,textDecoration: "underline" }}
                                 className="cursor-pointer"
                             >
