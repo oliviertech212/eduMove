@@ -6,10 +6,11 @@ import Image from "next/image";
 import { useSpring, animated } from "@react-spring/web";
 import { useEffect, useRef, useState } from "react";
 import { LandingPage } from "./landing-page";
-
+import { IParallax } from "@react-spring/parallax";
 
 export const ParallaxScene = () => {
-    const  ref= useRef<HTMLDivElement>(null);
+    // const  ref= useRef<HTMLDivElement>(null);
+    const ref = useRef<IParallax>(null);
     const [isFixed, setIsFixed] = useState(false);
 
     useEffect(() => {

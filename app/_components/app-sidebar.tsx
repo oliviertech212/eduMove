@@ -64,7 +64,7 @@ const roleOptions = [
 export function AppSidebar() {
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/signin";
+    window.location.href = "/";
   };
   const [user, setUser] = useState<any>();
   const [isMounted, setIsMounted] = useState(false);
