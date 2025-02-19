@@ -37,17 +37,21 @@ const SelectField: React.FC<SelectFieldProps> = ({
     <FormField
       control={props.control}
       name={props.name}
+      
       render={({ field, fieldState }) => (
         <FormItem className={`${props.className}`}>
           <FormLabel className="">{label}</FormLabel>
-          <FormControl>
+          <FormControl
+         
+          >
             <Select
               onValueChange={field.onChange}
               value={field.value || props.value}
+              
             >
               <SelectTrigger
                 className={cn(
-                  "w-full text-left font-normal bg-white hover:bg-white hover:text-primary border-[0.8px] rounded-lg border-gray-500/90",
+                  "w-full text-left font-normal bg-[red] hover:bg-white hover:text-primary border-[0.8px] rounded-lg border-gray-500/90",
                   !field.value && "text-muted-foreground",
                   field.value && "bg-white"
                 )}

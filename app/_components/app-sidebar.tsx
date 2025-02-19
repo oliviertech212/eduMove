@@ -16,41 +16,40 @@ import Link from "next/link";
 import axios from "axios";
 import { FaHome, FaRoute, FaBus, FaBell, FaChartBar, FaUsers,FaAngleDown, FaCalendarAlt, FaMoneyBillWave, FaCog, FaSchool, FaUserGraduate, FaUserTie } from "react-icons/fa";
 import { toast } from "sonner";
-import SelectField from "./text-fields/selectinputs";
-
+import { motion } from "framer-motion";
 type Role = "student" | "parent" | "school" | "TransportCompany";
 
 const roleBasedMenuItems = {
   student: [
-    { title: "Dashboard", url: "/dashboard", icon: FaHome },
-    { title: "My Routes", url: "/routes", icon: FaRoute },
-    { title: "Bus Schedule", url: "/schedule", icon: FaBus },
-    { title: "Notifications", url: "/notifications", icon: FaBell },
-    { title: "Payment History", url: "/payments", icon: FaMoneyBillWave },
+    { title: "Dashboard", url: "/myaccount", icon: FaHome },
+    { title: "My Routes", url: "/myaccount/routes", icon: FaRoute },
+    { title: "Bus Schedule", url: "/myaccount/schedule", icon: FaBus },
+    { title: "Notifications", url: "/myaccount/notifications", icon: FaBell },
+    { title: "Payment History", url: "/myaccount/payments", icon: FaMoneyBillWave },
   ],
   parent: [
-    { title: "Dashboard", url: "/dashboard", icon: FaHome },
-    { title: "Children Routes", url: "/children-routes", icon: FaRoute },
-    { title: "Bus Tracking", url: "/bus-tracking", icon: FaBus },
-    { title: "Notifications", url: "/notifications", icon: FaBell },
-    { title: "Payment Management", url: "/payments", icon: FaMoneyBillWave },
+    { title: "Dashboard", url: "/myaccount", icon: FaHome },
+    { title: "Children Routes", url: "/myaccount/children-routes", icon: FaRoute },
+    { title: "Bus Tracking", url: "/myaccount/bus-tracking", icon: FaBus },
+    { title: "Notifications", url: "/myaccount/notifications", icon: FaBell },
+    { title: "Payment Management", url: "/myaccount/payments", icon: FaMoneyBillWave },
   ],
   school: [
-    { title: "Dashboard", url: "/dashboard", icon: FaHome },
-    { title: "Student Management", url: "/students", icon: FaUserGraduate },
-    { title: "Route Planning", url: "/route-planning", icon: FaRoute },
-    { title: "Bus Schedules", url: "/schedules", icon: FaCalendarAlt },
-    { title: "Transport Analytics", url: "/analytics", icon: FaChartBar },
-    { title: "Settings", url: "/settings", icon: FaCog },
+    { title: "Dashboard", url: "/myaccount", icon: FaHome },
+    { title: "Student Management", url: "/myaccount/students", icon: FaUserGraduate },
+    { title: "Route Planning", url: "/myaccount/route-planning", icon: FaRoute },
+    { title: "Bus Schedules", url: "/myaccount/schedules", icon: FaCalendarAlt },
+    { title: "Transport Analytics", url: "/myaccount/analytics", icon: FaChartBar },
+    { title: "Settings", url: "/myaccount/settings", icon: FaCog },
   ],
   TransportCompany: [
-    { title: "Dashboard", url: "/dashboard", icon: FaHome },
-    { title: "Fleet Management", url: "/fleet", icon: FaBus },
-    { title: "Driver Management", url: "/drivers", icon: FaUserTie },
-    { title: "Route Optimization", url: "/route-optimization", icon: FaRoute },
-    { title: "Schedule Planning", url: "/scheduling", icon: FaCalendarAlt },
-    { title: "Analytics", url: "/analytics", icon: FaChartBar },
-    { title: "Cost Management", url: "/costs", icon: FaMoneyBillWave },
+    { title: "Dashboard", url: "/myaccount", icon: FaHome },
+    { title: "Fleet Management", url: "/myaccount/fleet", icon: FaBus },
+    { title: "Driver Management", url: "/myaccount/drivers", icon: FaUserTie },
+    { title: "Route Optimization", url: "/myaccount/route-optimization", icon: FaRoute },
+    { title: "Schedule Planning", url: "/myaccount/scheduling", icon: FaCalendarAlt },
+    { title: "Analytics", url: "/myaccount/analytics", icon: FaChartBar },
+    { title: "Cost Management", url: "/myaccount/costs", icon: FaMoneyBillWave },
   ]
 };
 
@@ -136,7 +135,7 @@ export function AppSidebar() {
 
   if (!isMounted) return null;
 
-  // Get menu items based on current role
+
   const currentMenuItems = roleBasedMenuItems[role] || [];
   return (
     <Sidebar className="text-white">
@@ -175,10 +174,24 @@ export function AppSidebar() {
               {currentMenuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url} className="flex items-center gap-3">
+                    <Link href={item.url} className="flex items-center gap-3 hover:translate-z-5 ">
                       <item.icon className="w-5 h-5" />
                       <span>{item.title}</span>
                     </Link>
+
+                    {/* <motion.div
+                                key={item.url}
+                              
+                                whileHover={{ scale: 1.1  , transition: { duration: 0.3 } ,textDecoration: "underline" }}
+                                className="cursor-pointer"
+                            >
+                              <Link href={item.url} className="flex items-center gap-3">
+                      <item.icon className="w-5 h-5" />
+                      <span>{item.title}</span>
+                    </Link>
+                            </motion.div> */}
+
+                   
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
