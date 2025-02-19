@@ -16,11 +16,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import SelectField from "../text-fields/selectinputs";
+
+// student , parent , school , TranspportCompany
+type  Role = "student" |"parent" |"school" | "TranspportCompany";
 
 const registerSchema = z.object({
   email : z.string().email(),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  name: z.string().min(2, "name is required"),
+  LastName: z.string().min(2, "Last Name must be at least 2 characters"),
+  FirstName: z.string().min(2, "First Name must be at least 2 characters"),
+  role : z.string().min(2, "Role must be at least 2 characters"),
+
+
 
 
 });
@@ -36,7 +44,10 @@ export default function Register() {
     defaultValues: {
       email: "",
       password: "",
-      name: "",
+      LastName: "",
+      FirstName: "",
+      role : "student",
+
     },
   });
 
@@ -83,7 +94,7 @@ export default function Register() {
 
         <FormField
           control={form.control}
-          name="name"
+          name="FirstName"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -95,6 +106,40 @@ export default function Register() {
         />
 
 <FormField
+          control={form.control}
+          name="LastName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="EX: Muhoza" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* role  */}
+
+        <SelectField 
+        name="role"
+        label="Occupation"
+        placeholder="Select your occupation"
+        options={{
+          student: "Student",
+          parent: "Parent",
+          school: "School",
+          TranspportCompany: "TranspportCompany",
+        }}
+        control={form.control}
+        />
+       
+
+
+
+
+
+
+        <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
@@ -131,9 +176,11 @@ export default function Register() {
         >
           {loading ? "Registering..." : "Register"}
         </Button>
-        <p className="">Have an account <Link
-      href="/signin"
-      >Login</Link> </p>
+      
+
+<p className=" w-[100%]   ">Have an account? <Link className="hover:text-blue-500 underline"
+       href="/signin"
+       >Login</Link> </p>
       </form>
     </Form>
   );

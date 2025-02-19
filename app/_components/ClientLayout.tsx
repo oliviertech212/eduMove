@@ -1,4 +1,4 @@
-// app/ClientLayout.tsx
+
 'use client';
 
 import { ParallaxProvider } from "react-scroll-parallax";

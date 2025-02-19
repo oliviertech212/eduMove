@@ -49,6 +49,9 @@ export default function Login() {
   
   const handleLogin = async (data: LoginFormValues) => {
     setLoading(true);
+
+
+
    
   
     try {
@@ -74,6 +77,8 @@ export default function Login() {
       toast.error(err.response.data.error);
     } finally {
       setLoading(false);
+
+      router.push("/myaccount");
     }
   };
 

@@ -3,7 +3,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   
   
   return (
-    <div className="w-full flex flex-col md:flex-row ">
+    <div className="w-full flex flex-col-reverse md:flex-row-reverse ">
       {/* <div className="landingpage flex flex-col md:w-1/2 justify-center items-center min-h-screen">
        
       </div> */}

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { it } from "node:test";
+
 
 export const Header = () => {
     const [isFixed, setIsFixed] = useState(false);
