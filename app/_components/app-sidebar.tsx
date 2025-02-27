@@ -55,13 +55,7 @@ const roleBasedMenuItems = {
   ]
 };
 
-// Role selection options
-const roleOptions = [
-  { label: "Student", value: "student" },
-  { label: "Parent", value: "parent" },
-  { label: "School", value: "school" },
-  { label: "Transport Company", value: "TransportCompany" }
-];
+
 
 export function AppSidebar() {
   const handleLogout = () => {
