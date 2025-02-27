@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; 
 import Link from "next/link";
 import axios from "axios";
-import { FaHome, FaRoute, FaBus, FaBell, FaChartBar, FaUsers,FaAngleDown, FaCalendarAlt, FaMoneyBillWave, FaCog, FaSchool, FaUserGraduate, FaUserTie } from "react-icons/fa";
+import { FaHome, FaRoute, FaBus, FaBell, FaChartBar, FaUsers,FaAngleDown, FaCalendarAlt, FaMoneyBillWave, FaCog, FaSchool, FaUserGraduate, FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 type Role = "student" | "parent" | "school" | "TransportCompany";
@@ -45,11 +45,12 @@ const roleBasedMenuItems = {
   TransportCompany: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
     { title: "Fleet Management", url: "/myaccount/fleet", icon: FaBus },
-    { title: "Driver Management", url: "/myaccount/drivers", icon: FaUserTie },
-    { title: "Route Optimization", url: "/myaccount/route-optimization", icon: FaRoute },
-    { title: "Schedule Planning", url: "/myaccount/scheduling", icon: FaCalendarAlt },
-    { title: "Analytics", url: "/myaccount/analytics", icon: FaChartBar },
-    { title: "Cost Management", url: "/myaccount/costs", icon: FaMoneyBillWave },
+    // { title: "Driver Management", url: "/myaccount/drivers", icon: FaUserTie },
+    // { title: "Route Optimization", url: "/myaccount/route-optimization", icon: FaRoute },
+    { title: "Spot Destinations", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
+    // { title: "Schedule Planning", url: "/myaccount/scheduling", icon: FaCalendarAlt },
+    // { title: "Analytics", url: "/myaccount/analytics", icon: FaChartBar },
+    // { title: "Cost Management", url: "/myaccount/costs", icon: FaMoneyBillWave },
   ]
 };
 
