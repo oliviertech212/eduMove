@@ -59,7 +59,7 @@ const StudentBoardingVerification = () => {
         const tripsData: Trip[] = [
           {
             id: 'trip-001',
-            route: 'Downtown to Northern High School',
+            route: 'Kigali to Muhanga High School',
             departureTime: '7:30 AM',
             busNumber: 'BUS-123',
             driver: 'John Smith',
@@ -67,7 +67,7 @@ const StudentBoardingVerification = () => {
           },
           {
             id: 'trip-002',
-            route: 'Eastern District to Central Elementary',
+            route: 'Kayonza East  to Kigali Gasabo',
             departureTime: '8:00 AM',
             busNumber: 'BUS-456',
             driver: 'Sarah Johnson',
@@ -98,7 +98,7 @@ const StudentBoardingVerification = () => {
           {
             id: 'std-001',
             name: 'Emma Wilson',
-            school: 'Northern High School',
+            school: 'Muhanga High School',
             grade: '10',
             ticketId: 'TK-78901',
             boardingStatus: 'Pending',
@@ -107,7 +107,7 @@ const StudentBoardingVerification = () => {
           {
             id: 'std-002',
             name: 'Michael Brown',
-            school: 'Northern High School',
+            school: 'Gasabo High School',
             grade: '11',
             ticketId: 'TK-78902',
             boardingStatus: 'Pending',
@@ -116,7 +116,7 @@ const StudentBoardingVerification = () => {
           {
             id: 'std-003',
             name: 'Sophia Davis',
-            school: 'Northern High School',
+            school: 'Kayonza East',
             grade: '9',
             ticketId: 'TK-78903',
             boardingStatus: 'Pending',
@@ -125,7 +125,7 @@ const StudentBoardingVerification = () => {
           {
             id: 'std-004',
             name: 'James Miller',
-            school: 'Central Elementary',
+            school: 'Kigali High School',
             grade: '5',
             ticketId: 'TK-78904',
             boardingStatus: 'Pending',
