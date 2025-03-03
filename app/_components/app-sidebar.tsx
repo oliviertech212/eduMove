@@ -17,7 +17,7 @@ import axios from "axios";
 import { FaHome, FaRoute, FaBus, FaBell, FaChartBar, FaUsers,FaAngleDown, FaCalendarAlt, FaMoneyBillWave, FaCog, FaSchool, FaUserGraduate, FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-type Role = "student" | "parent" | "school" | "TransportCompany";
+export type Role = "student" | "parent" | "school" | "TransportCompany";
 
 const roleBasedMenuItems = {
   student: [
@@ -29,10 +29,10 @@ const roleBasedMenuItems = {
   ],
   parent: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
-    { title: "Children Routes", url: "/myaccount/children-routes", icon: FaRoute },
+    { title: "Travel Schedule ", url: "/myaccount/travel-schedule", icon: FaRoute },
     { title: "Bus Tracking", url: "/myaccount/bus-tracking", icon: FaBus },
-    { title: "Notifications", url: "/myaccount/notifications", icon: FaBell },
-    { title: "Payment Management", url: "/myaccount/payments", icon: FaMoneyBillWave },
+    // { title: "Notifications", url: "/myaccount/notifications", icon: FaBell },
+    // { title: "Payment Management", url: "/myaccount/payments", icon: FaMoneyBillWave },
   ],
   school: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
