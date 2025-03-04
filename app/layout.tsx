@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./_components/ClientLayout";
-
+import { Toaster } from "@/components/ui/sonner"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,6 +30,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-clash`}
       >
+        <Toaster
+          position="top-right"
+        
+         
+          toastOptions={{
+            duration: 5000,
+            
+          }}
+         /> 
         <ClientLayout>
           {children}
         </ClientLayout>

@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import { LandingPage } from "./_components/landing-page";
 import { ParallaxScene } from "./_components/ParallaxScene";
 import { useParallax } from "react-scroll-parallax";
-
+import { Toaster } from "@/components/ui/sonner"
 export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -19,6 +19,7 @@ export default function Home() {
     <div
       className="font-clash text-center   min-h-screen  pb-20 "
     >
+     
      <ParallaxScene />
     </div>
   );

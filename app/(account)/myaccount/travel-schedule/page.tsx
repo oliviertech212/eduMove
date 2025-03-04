@@ -2,7 +2,10 @@
 
 import { Role } from '@/app/_components/app-sidebar';
 import { BookingModelForm } from '@/app/_components/forms/bookingmodel';
+import TripFilter from '@/app/_components/forms/filters/topfilter';
+import { mockBookings, mockTrips } from '@/dummydata/trips-booking';
 import React, { useState, useEffect, use } from 'react';
+import { set } from 'react-hook-form';
 import { 
   FaPlus, 
   FaEdit, 
@@ -67,6 +70,7 @@ export type Booking = {
 
 
 
+
 // Available Spots Management Page
 const TransporterSpotManagement = () => {
   // State for active tab
@@ -74,6 +78,7 @@ const TransporterSpotManagement = () => {
   
   // State for bus trips
   const [busTrips, setBusTrips] = useState<BusTrip[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [fromDestinations, setFromDestinations] = useState<fromDestination[]>([]);
@@ -139,211 +144,7 @@ const TransporterSpotManagement = () => {
 
         ]
         
-        const mockTrips: BusTrip[] = [
-          { 
-            id: 't1', 
-            destinationId: 'd1', 
-            destinationName: 'South',
-            district: 'Butare',
-            departureDate: '2025-03-05', 
-            departureTime: '08:00', 
-            totalCapacity: 45, 
-            availableSpots: 12, 
-            price: 1500, 
-            status: 'Active' ,
-            distance: '100km',
-            expectedTime: '2 hours',
-            fromId: 'd1',
-            fromName: 'Kigali',
-            fromDistrict: 'Nyarugenge',
-            company: 'Rwanda Transport',
-
-
-
-          },
-
-          { 
-            id: 't2', 
-            destinationId: 'd2', 
-            destinationName: 'North',
-            district: 'Musanze',
-            departureDate: '2025-03-06', 
-            departureTime: '09:00', 
-            totalCapacity: 30, 
-            availableSpots: 30, 
-            price: 2000, 
-            status: 'Active' ,
-            distance: '90km',
-            expectedTime: '1.5 hours',
-            fromId: 'd2',
-            fromName: 'Kigali',
-            fromDistrict: 'Kicukiro',
-            company: 'RITCO',
-          },
-          { 
-            id: 't3', 
-            destinationId: 'd3', 
-            destinationName: 'West',
-            district: 'Karongi',
-            departureDate: '2025-03-07', 
-            departureTime: '10:00', 
-            totalCapacity: 40, 
-            availableSpots: 40, 
-            price: 1800, 
-            status: 'Active' ,
-            distance: '110km',
-            expectedTime: '2.5 hours',
-            fromId: 'd3',
-            fromName: 'Kigali',
-            fromDistrict: 'Gasabo',
-            company: 'Royal Express'
-          },
-          { 
-            id: 't4', 
-            destinationId: 'd4', 
-            destinationName: 'East',
-            district: 'Nyagatare',
-            departureDate: '2025-03-08', 
-            departureTime: '11:00', 
-            totalCapacity: 35, 
-            availableSpots: 35, 
-            price: 1700, 
-            status: 'Active' ,
-            distance: '120km',
-            expectedTime: '3 hours',
-            fromId: 'd4',
-            fromName: 'Kigali',
-            fromDistrict: 'Kicukiro',
-            company: 'Rwanda Transport',
-
-          },
-          { 
-            id: 't5', 
-            destinationId: 'd5', 
-            destinationName: 'South',
-            district: 'Nyamagabe',
-            departureDate: '2025-03-09', 
-            departureTime: '12:00', 
-            totalCapacity: 50, 
-            availableSpots: 50, 
-            price: 1600, 
-            status: 'Active' ,
-            distance: '130km',
-            expectedTime: '3.5 hours',
-            fromId: 'd5',
-            fromDistrict: 'Gasabo',
-            fromName: 'Kigali',
-            company: 'RITCO',
-          },
-          { 
-            id: 't6', 
-            destinationId: 'd6', 
-            destinationName: 'West',
-            district: 'Rubavu',
-            departureDate: '2025-03-10', 
-            departureTime: '13:00', 
-            totalCapacity: 55, 
-            availableSpots: 55, 
-            price: 1500, 
-            status: 'Active' ,
-            distance: '140km',
-            expectedTime: '4 hours',
-            fromId: 'd6',
-
-
-          },
-         
-        ];
-        
-        const mockBookings: Booking[] = [
-          {
-            id: 'b1',
-            tripId: 't1',
-            studentId: 's1',
-            studentName: 'John Doe',
-            bookingDate: '2025-02-20',
-            status: 'Confirmed',
-            paymentStatus: 'Paid'
-          },
-          {
-            id: 'b2',
-            tripId: 't1',
-            studentId: 's2',
-            studentName: 'Jane Smith',
-            bookingDate: '2025-02-21',
-            status: 'Confirmed',
-            paymentStatus: 'Paid'
-          },
-          {
-            id: 'b3',
-            tripId: 't2',
-            studentId: 's3',
-            studentName: 'Bob Johnson',
-            bookingDate: '2025-02-22',
-            status: 'Pending',
-            paymentStatus: 'Pending'
-          },
-
-          {
-            id: 'b4',
-            tripId: 't3',
-            studentId: 's4',
-            studentName: 'Alice Brown',
-            bookingDate: '2025-02-23',
-            status: 'Confirmed',
-            paymentStatus: 'Paid'
-          },
-          {
-            id: 'b5',
-            tripId: 't4',
-            studentId: 's5',
-            studentName: 'Eve White',
-            bookingDate: '2025-02-24',
-            status: 'Confirmed',
-            paymentStatus: 'Paid'
-          },
-          {
-            id: 'b6',
-            tripId: 't5',
-            studentId: 's6',
-            studentName: 'Mike Black',
-            bookingDate: '2025-02-25',
-            status: 'Pending',
-            paymentStatus: 'Pending'
-          },
-          {
-            id: 'b7',
-            tripId: 't6',
-            studentId: 's7',
-            studentName: 'Sarah Green',
-            bookingDate: '2025-02-26',
-            status: 'Confirmed',
-            paymentStatus: 'Paid'
-          },
-          {
-            id: 'b8',
-            tripId: 't6',
-            studentId: 's8',
-            studentName: 'Tom Grey',
-            bookingDate: '2025-02-27',
-            status: 'Confirmed',
-            paymentStatus: 'Paid'
-          },
-          {
-            id: 'b9',
-            tripId: 't6',
-            studentId: 's9',
-            studentName: 'Lisa Red',
-            bookingDate: '2025-02-28',
-            status: 'Confirmed',
-            paymentStatus: 'Paid'
-          },
-
-
-
-
-
-        ];
+       
         
         setDestinations(mockDestinations);
         setBusTrips(mockTrips);
@@ -399,9 +200,29 @@ const TransporterSpotManagement = () => {
 
   setTimeout(() => {
     setBookingModel(false);
-    toast.success('Ticket booked successfully!');
+    toast.success(`Ticket for ${newBooking.studentName} booked successfully!`);
   }, 2000);
 };
+
+const handleTripDestination = (
+  fromdestination: string,
+  datadestination: string
+) => {
+  
+  
+  if (busTrips.length > 0) {
+    let filteredBusTrips = busTrips.filter((trip) =>
+      trip?.distance?.includes( datadestination) || trip.destinationName.includes( datadestination) || trip?.fromDistrict?.includes(fromdestination) || trip?.fromName?.includes(fromdestination) 
+   
+    );
+   
+    setBusTrips(filteredBusTrips); 
+  } else {
+    setBusTrips(mockTrips);
+  }
+};
+
+
 
 
 
@@ -755,13 +576,18 @@ const TransporterSpotManagement = () => {
            <BookingModelForm Trip={bookTrip} handleSubmitTripBooking={handleSubmitTripBooking}  closeModal={handlecloseModel}  />
           )}
           
+          <TripFilter handleTripDestination={handleTripDestination} />
           {/* Trips Table */}
           <div className="bg-white rounded-lg shadow overflow-x-scroll">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destination</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destination
+
+
+
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Available</th>
