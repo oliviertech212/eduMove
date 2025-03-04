@@ -44,11 +44,12 @@ const roleBasedMenuItems = {
   ],
   school: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
-    { title: "Student Management", url: "/myaccount/students", icon: FaUserGraduate },
-    { title: "Route Planning", url: "/myaccount/route-planning", icon: FaRoute },
-    { title: "Bus Schedules", url: "/myaccount/schedules", icon: FaCalendarAlt },
-    { title: "Transport Analytics", url: "/myaccount/analytics", icon: FaChartBar },
-    { title: "Settings", url: "/myaccount/settings", icon: FaCog },
+    {title:"Student's Arrivals",url:"/myaccount/students-arrivals",icon:FaUsers},
+    // { title: "Student Management", url: "/myaccount/students", icon: FaUserGraduate },
+    // { title: "Route Planning", url: "/myaccount/route-planning", icon: FaRoute },
+    // { title: "Bus Schedules", url: "/myaccount/schedules", icon: FaCalendarAlt },
+    // { title: "Transport Analytics", url: "/myaccount/analytics", icon: FaChartBar },
+    // { title: "Settings", url: "/myaccount/settings", icon: FaCog },
   ],
   TransportCompany: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
