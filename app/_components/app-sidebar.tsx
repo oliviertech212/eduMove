@@ -31,6 +31,14 @@ const roleBasedMenuItems = {
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
     { title: "Travel Schedule ", url: "/myaccount/travel-schedule", icon: FaRoute },
     { title: "Bus Tracking", url: "/myaccount/bus-tracking", icon: FaBus },
+    {
+      title: "Notifications",
+      url: "/myaccount/notifications",
+      icon: FaBell,
+    },
+    { title: "Payment History", url: "/myaccount/payments", icon: FaMoneyBillWave },
+
+  
     // { title: "Notifications", url: "/myaccount/notifications", icon: FaBell },
     // { title: "Payment Management", url: "/myaccount/payments", icon: FaMoneyBillWave },
   ],
