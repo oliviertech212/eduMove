@@ -19,7 +19,7 @@ const  router = useRouter();
     }, []);
 
     return (
-        <header className={`fixed top-0 left-0 cursor-pointer right-0 mx-auto w-[95%] z-50 transition-all duration-300 px-4 py-5 
+        <header className={`fixed top-0 left-0 cursor-pointer right-0 mx-auto w-[100%] md:px-10  z-50 transition-all duration-300 px-4 py-5 
             ${isFixed ? "bg-black shadow-md" : "bg-primary"}`}>
             <div className="flex flex-row items-center justify-between text-white">
                 <div className="text-4xl font-clash">eduMove</div>
@@ -44,7 +44,7 @@ const  router = useRouter();
 
 export const LandingPage = () => {
     return (
-        <div className="pt-20 !mx-10">
+        <div className="pt-20 !mx-30 ">
             <Header />
         </div>
     );

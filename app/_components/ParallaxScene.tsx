@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { useSpring, animated } from "@react-spring/web";
 import { useEffect, useRef, useState } from "react";
-import { LandingPage } from "./landing-page";
+import { Header, LandingPage } from "./landing-page";
 import { IParallax } from "@react-spring/parallax";
 
 export const ParallaxScene = () => {
@@ -14,28 +14,32 @@ export const ParallaxScene = () => {
     const [isFixed, setIsFixed] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-          if (typeof window !== "undefined" && window.scrollY > 24) {
-            setIsFixed(true);
+      const handleScroll = () => {
+          if (ref.current && ref.current.current > 24) {
+              setIsFixed(true);
+              console.log("Scrolled in Parallax");
           } else {
-            console.log("scrolled not");
-            setIsFixed(false);
+              setIsFixed(false);
           }
-        };
-    
-        window.addEventListener("scroll", handleScroll);
-    
-        return () => {
-          window.removeEventListener("scroll", handleScroll);
-        };
-      }, []);
+      };
+  
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  
+
+   
   return (
-    <Parallax pages={7}  ref={ref} 
+    // <Parallax pages={7}  ref={ref} 
     
-     style={{ padding: "" }}
-     className=" !m-auto  !w-[100%] !h-[100%] !overflow-scroll relative text-center"
-    >
-      <LandingPage />
+    //  style={{ padding: "" }}
+    //  className=" !m-auto  !w-[100%] !h-[100%] !overflow-hidden relative text-center"
+    // > 
+    // <Parallax pages={7} ref={ref} className="w-full h-screen">
+  <Parallax pages={7} ref={ref} className="w-full h-screen overflow-hidden">
+
+      {/* <LandingPage /> */}
+      <Header  />
       <ParallaxLayer
       sticky={{ start: 0.9, end: 2.5}}
         >
