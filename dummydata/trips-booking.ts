@@ -1,4 +1,5 @@
 import { Booking, BusTrip } from "@/app/(account)/myaccount/travel-schedule/page";
+import { TravelPlan } from "@/types";
 
 export const mockTrips: BusTrip[] = [
     { 
@@ -205,3 +206,82 @@ export const mockTrips: BusTrip[] = [
 
 
   ];
+
+
+  export const travelPlans: TravelPlan[] = [
+    {
+      id: "1",
+      title: "Morning School Run",
+      description: "Daily school run from Downtown to Greenwood High School.",
+      departureLocation: "Downtown",
+      arrivalLocation: "Greenwood High School",
+      departureDate: "2025-02-22",
+      departureTime: "07:30",
+      estimatedArrivalTime: "08:15",
+      district: "Central District",
+      publishedDate: "2025-02-20",
+      publishedBy: "Admin",
+      status: "Published",
+      seats: 40,
+      availableSeats: 12,
+      transporterId: "T001",
+      transporterName: "SafeRide Transport",
+      vehicleInfo: {
+        vehicleId: "V001",
+        registrationNumber: "ABC-1234",
+        type: "Minibus",
+        capacity: 40,
+      },
+    },
+    {
+      id: "2",
+      title: "Evening School Pickup",
+      description: "Evening transport from Greenwood High School to Downtown.",
+      departureLocation: "Greenwood High School",
+      arrivalLocation: "Downtown",
+      departureDate: "2025-02-22",
+      departureTime: "16:00",
+      estimatedArrivalTime: "16:45",
+      district: "Central District",
+      publishedDate: "2025-02-20",
+      publishedBy: "Admin",
+      status: "Draft",
+      seats: 40,
+      availableSeats: 25,
+      transporterId: "T001",
+      transporterName: "SafeRide Transport",
+      vehicleInfo: {
+        vehicleId: "V002",
+        registrationNumber: "XYZ-5678",
+        type: "Bus",
+        capacity: 50,
+      },
+    },
+    {
+      id: "3",
+      title: "Weekend Trip to Science Center",
+      description: "Educational trip for students to the Science Center.",
+      departureLocation: "Greenwood High School",
+      arrivalLocation: "Science Center",
+      departureDate: "2025-02-24",
+      departureTime: "09:00",
+      estimatedArrivalTime: "10:30",
+      district: "West District",
+      publishedDate: "2025-02-21",
+      publishedBy: "Admin",
+      status: "Cancelled",
+      seats: 30,
+      availableSeats: 0,
+      transporterId: "T002",
+      transporterName: "EduTrips Ltd.",
+      vehicleInfo: {
+        vehicleId: "V003",
+        registrationNumber: "LMN-9876",
+        type: "Coach",
+        capacity: 30,
+      },
+    },
+  ];
+  
+
+  

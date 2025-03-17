@@ -55,6 +55,12 @@ export type BusTrip = {
   company? : string;
   driver? : string;
   busPlateNumber? : string;
+  busDetails?: {
+    busId: string;
+    busNumber: string;
+    driverName: string;
+    driverContact: string;
+  };
 
 
 };

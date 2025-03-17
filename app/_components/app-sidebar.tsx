@@ -16,8 +16,7 @@ import Link from "next/link";
 import axios from "axios";
 import { FaHome, FaRoute, FaBus, FaBell, FaChartBar, FaUsers,FaAngleDown, FaCalendarAlt, FaMoneyBillWave, FaCog, FaSchool, FaUserGraduate, FaUserTie, FaMapMarkerAlt } from "react-icons/fa";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
-export type Role = "student" | "parent" | "school" | "TransportCompany";
+export type Role = "student" | "parent" | "school" | "TransportCompany" | "Authority";
 
 const roleBasedMenuItems = {
   student: [
@@ -45,6 +44,11 @@ const roleBasedMenuItems = {
   school: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
     {title:"Student's Arrivals",url:"/myaccount/students-arrivals",icon:FaUsers},
+    {
+      title: "Notifications",
+      url: "/myaccount/notifications",
+      icon: FaBell,
+    },
     // { title: "Student Management", url: "/myaccount/students", icon: FaUserGraduate },
     // { title: "Route Planning", url: "/myaccount/route-planning", icon: FaRoute },
     // { title: "Bus Schedules", url: "/myaccount/schedules", icon: FaCalendarAlt },
@@ -62,6 +66,12 @@ const roleBasedMenuItems = {
     // { title: "Schedule Planning", url: "/myaccount/scheduling", icon: FaCalendarAlt },
     // { title: "Analytics", url: "/myaccount/analytics", icon: FaChartBar },
     // { title: "Cost Management", url: "/myaccount/costs", icon: FaMoneyBillWave },
+  ]
+  ,
+  Authority: [
+    { title: "Dashboard", url: "/myaccount", icon: FaHome },
+    { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
+    
   ]
 };
 
@@ -170,6 +180,7 @@ export function AppSidebar() {
                     <option value="student">Student</option>
                     <option value="parent">Parent</option>
                     <option value="school">School</option>
+                    <option value="Authority">Authority</option>
                     <option value="TransportCompany">Transport Company</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">

@@ -5,8 +5,10 @@ import ParentDashboard from "@/app/_components/dasboard-overview/parent";
 import SchoolDashboard from "@/app/_components/dasboard-overview/school";
 import StudentDashboard from "@/app/_components/dasboard-overview/student";
 import TransportCoDashboard from "@/app/_components/dasboard-overview/transport-company";
+import TransporterSpotManagement from "./travel-schedule/page";
+import TravelPlanManagement from "./travel-plans/page";
 
-type Role = "student" | "parent" | "school" | "TransportCompany";
+type Role = "student" | "parent" | "school" | "TransportCompany"| "Authority";
 
 const Home = () => {
   const [role, setRole] = useState<Role | null>(null);
@@ -26,6 +28,7 @@ const Home = () => {
       {role === "parent" && <ParentDashboard />}
       {role === "school" && <SchoolDashboard />}
       {role === "TransportCompany" && <TransportCoDashboard />}
+      {role === "Authority" && <TravelPlanManagement />}
       {!role && <p>Loading dashboard...</p>}
     </div>
   );
