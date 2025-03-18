@@ -36,12 +36,8 @@ export default function Home() {
     }
   }, []);
   return (
-    // <div
-    //   className="font-clash text-center   min-h-screen  pb-20 "
-    // >
       <div className="font-clash text-center min-h-screen overflow-auto">
 
-     <Header/>
      <ParallaxScene />
     </div>
   );

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 export const Header = () => {
     const [isFixed, setIsFixed] = useState(false);
+    const [activeTab, setActiveTab] = useState("Home");
 
 const  router = useRouter();
     useEffect(() => {
@@ -18,6 +19,21 @@ const  router = useRouter();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const handleChangeActiveTab = (item: string) => {
+        setActiveTab(item);
+        console.log("item is hovered", item== activeTab);
+    }
+ const handleItmClick = (item: string) => {
+        setActiveTab(item);
+        if (item === "Login") {
+            router.push("/signin");
+        }else{
+            router.push("/");
+        }
+    }
+       
+
+
     return (
         <header className={`fixed top-0 left-0 cursor-pointer right-0 mx-auto w-[100%] md:px-10  z-50 transition-all duration-300 px-4 py-5 
             ${isFixed ? "bg-black shadow-md" : "bg-primary"}`}>
@@ -25,12 +41,15 @@ const  router = useRouter();
                 <div className="text-4xl font-clash">eduMove</div>
                 <nav className="p-4">
                     <ul className="flex gap-10 font-bold">
-                        {["Home", "About", "Contact", "Login"].map((item) => (
+                        {["Home","Travel Schedule", "About", "Contact", "Login"].map((item) => (
                             <motion.li
                                 key={item}
-                                onClick={() => item   === "Login" ? router.push("/signin") : router.push("/")}
+                            
+                                onHoverStart={() => handleChangeActiveTab(item)}
+                                
+                                onClick={() => handleItmClick(item)}
                                 whileHover={{ scale: 1.5 , color: "#f8f8f8" , transition: { duration: 0.3 } ,textDecoration: "underline" }}
-                                className="cursor-pointer"
+                                className={`cursor-pointer ${activeTab == item ? " underline" : ""}`}
                             >
                                 {item}
                             </motion.li>
