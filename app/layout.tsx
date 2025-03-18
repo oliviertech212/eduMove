@@ -5,6 +5,7 @@ import "./globals.css";
 import ClientLayout from "./_components/ClientLayout";
 import { Toaster } from "@/components/ui/sonner"
 import { Header } from "./_components/landing-page";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -41,7 +42,7 @@ export default function RootLayout({
           }}
          /> 
 
-     <Header/>
+        <Header/>
         <ClientLayout>
           {children}
         </ClientLayout>
