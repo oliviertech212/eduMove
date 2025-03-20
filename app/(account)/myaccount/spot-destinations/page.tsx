@@ -1,7 +1,7 @@
 "use client";
 
 import { TravelPlan } from '@/app/_components/travel-plan';
-import { ScheduleType } from '@/types';
+import { ScheduleType, UserType } from '@/types';
 import axios from 'axios';
 import { set } from 'date-fns';
 import { FiPlus, FiTrash2, FiX } from 'react-icons/fi';
@@ -37,14 +37,15 @@ const TransporterSpotManagement = () => {
   const [travelSchedule , setTravelSchedule ] = useState<ScheduleType[]>([]);
   const [loadschedule, setLoadSchedule] = useState(true);
   const [loading, setLoading] = useState(true);
-  let user = localStorage.getItem("user");
+  const [user , setUser] = useState<UserType>();
+ 
   const [showTripForm, setShowTripForm] = useState(false);
   const [editingTrip, setEditingTrip] = useState<ScheduleType | null>(null);
   const [tripSlots, setTripSlots] = useState<any[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<TravelPlan | null>(null);
   const [tripForm, setTripForm] = useState({
     plan: '',
-    transporter: user && JSON.parse(user)?._id || '',
+    transporter: user?._id || '',
     price: 0,
     departure: '',
     destination: '',
@@ -202,6 +203,10 @@ const TransporterSpotManagement = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      const savedUser = user ? JSON.parse(user) : null;
+      setUser(savedUser);
+      
      getallTravelSchedule(); 
      getallTravelPlans();
     }
