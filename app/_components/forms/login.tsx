@@ -7,7 +7,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {
+import { 
   Form,
   FormControl,
   FormField,
@@ -49,36 +49,46 @@ export default function Login() {
   
   const handleLogin = async (data: LoginFormValues) => {
     setLoading(true);
-
-
-
-   
   
     try {
-      const res = await axios.post("/api/v1/auth/login", data);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("usertoken", res.data.token);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-          
-            email: res.data.user.email,
-            name: res.data.user.name,
-            token : res.data.token
-          })
-        );
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}auth/signin`,
+        data
+      );
+  
+      if (response.status === 200) {
+        // Save user data to localStorage
+        if (typeof window !== "undefined") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              email: response.data.user?.email,
+              name: response.data.user?.name,
+            })
+          );
+
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userRole", response.data.user?.role);
+        }
+  
+        toast.success("Login successful");
+        console.log("response", response.data);
+  
+        // Redirect to dashboard or another page
+        router.push("/myaccount");
+      } else {
+        toast.error("Unexpected response from the server.");
       }
-      toast.success("Login successful");
-      router.push("/dashboard");
     } catch (err: any) {
-      if (err.status === 401) {
-        toast.error(err.response.data.error);
+
+      if (err.response?.status === 401) {
+        toast.error( err.response.data.message || "Email or password is incorrect");
+      } else {
+        toast.error(err.response?.data?.message || "An error occurred during login.");
       }
-      toast.error(err.response.data.error);
+      console.error("Login error:", err);
     } finally {
       setLoading(false);
-
-      router.push("/myaccount");
     }
   };
 

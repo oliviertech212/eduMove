@@ -4,7 +4,7 @@ import ParentNotificationPage from "@/app/_components/notifications/parent-notif
 import SchoolTravelNotifications from "@/app/_components/notifications/school-notifications";
 import { useState, useEffect } from "react";
 import { mockBookings, mockTrips } from "@/dummydata/trips-booking";
-type Role = "student" | "parent" | "school" | "TransportCompany";
+type Role = "student" | "parent" | "school" | "transporter";
 
 const Page = () => {
   const [role, setRole] = useState<Role | null>(null);
@@ -28,7 +28,7 @@ const Page = () => {
       busTrips={mockTrips} bookings={mockBookings} 
        schoolId="school-123"
       />}
-      {/* {role === "TransportCompany" && <TransportCoDashboard />} */}
+      {/* {role === "transporter" && <TransportCoDashboard />} */}
       {!role && <p>Loading Notifications...</p>}
     </div>
   );

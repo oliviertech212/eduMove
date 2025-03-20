@@ -31,7 +31,7 @@ export default function Home() {
   
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("userRole", "TransportCompany");
+      localStorage.setItem("userRole", "transporter");
      
     }
   }, []);

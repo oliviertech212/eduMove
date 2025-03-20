@@ -7,7 +7,7 @@
 // import { FaCheck, FaExclamationTriangle, FaBus, FaUserGraduate } from 'react-icons/fa';
 // import axios from 'axios';
 // import { toast } from 'sonner';
-// import ArrivalConfirmation from '@/app/_components/transportcompany-student-arrivals';
+// import ArrivalConfirmation from '@/app/_components/transporter-student-arrivals';
 
 // // Types
 // interface Student {
@@ -279,9 +279,10 @@ import React, { useState, useEffect } from 'react';
 import { FaCheck, FaExclamationTriangle, FaBus, FaUserGraduate, FaSearch, FaFilter, FaDownload, FaEye } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'sonner';
-import ArrivalConfirmation from '@/app/_components/transportcompany-student-arrivals';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import QRCode from "react-qr-code";
+import ArrivalConfirmation from '@/app/_components/transportcompany-student-arrivals';
 
 // Types
 interface Student {

@@ -397,7 +397,7 @@ const handleTripDestination = (
           onClick={() => setActiveTab('trips')}
         >
         {
-           userRole === "TransportCompany" ? " Available Spots" : "Available Schedule "
+           userRole === "transporter" ? " Available Spots" : "Available Schedule "
         }
         </button>
         <button 
@@ -411,7 +411,7 @@ const handleTripDestination = (
       {/* Available Spots Tab */}
       {activeTab ===  'trips'   && (
         <div>
-           {  userRole === "TransportCompany" &&   <div className="flex justify-between items-center mb-4">
+           {  userRole === "transporter" &&   <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Available Bus Trips</h2>
             <button 
               className="bg-primary text-white px-4 py-2 rounded-md flex items-center gap-2"
@@ -659,7 +659,7 @@ const handleTripDestination = (
                           <FaPlus />Book
                       </button>
 
-                     {  userRole === "TransportCompany" && (<>
+                     {  userRole === "transporter" && (<>
                       <button 
                           onClick={() => handleEditTrip(trip)}
                           className="text-indigo-600 hover:text-indigo-900 mr-3"

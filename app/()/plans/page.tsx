@@ -129,7 +129,7 @@ const TransporterSpotManagement = () => {
   const getallTravelPlans = async () => {
 
     try {
-      const response = await axios.get(process.env.NEXT_PUBLIC_API_URL + 'plans'); 
+      const response = await axios.get(process.env.NEXT_PUBLIC_API_URL+'plans'); 
       console.log("trvel plan",response.data);
       setLoadingPlans(false);
       
@@ -428,7 +428,7 @@ const handleTripDestination = (
           onClick={() => setActiveTab('trips')}
         >
         {
-           userRole === "TransportCompany" ? " Available Spots" : "Available Schedule "
+           userRole === "transporter" ? " Available Spots" : "Available Schedule "
         }
         </button>
         <button 
@@ -682,7 +682,7 @@ const handleTripDestination = (
                           <FaPlus />Book
                       </button>
 
-                     {  userRole === "TransportCompany" && (<>
+                     {  userRole === "transporter" && (<>
                       <button 
                           onClick={() => handleEditTrip(trip)}
                           className="text-indigo-600 hover:text-indigo-900 mr-3"

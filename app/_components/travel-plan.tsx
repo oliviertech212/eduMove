@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { format } from 'date-fns';
 
@@ -46,39 +45,45 @@ const TravelPlansList: React.FC<TravelPlansListProps> = ({ travelPlans, isLoadin
   }
 
   return (
-    <div className=" gap-4 grid grid-cols-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {sortedDates.map((date) => (
-        <div key={date} className="bg-white rounded-lg h-fit shadow-md overflow-hidden">
-          <div className="bg-blue-600 text-white p-4">
+        <div key={date} className={`
+
+          ${ new Date(date) > new Date()? 'border-4 border-l-primary' : ' border-4 border-l-red-400'}
+
+          bg-white rounded-lg h-fit shadow-lg border overflow-hidden
+        `}>
+          <div className="border-b-2 bg-blue-100 p-4">
             <h2 className="text-xl font-bold">{format(new Date(date), 'MMMM d, yyyy')}</h2>
-            <p className="text-blue-100">{groupedByDate[date].length} destination{groupedByDate[date].length !== 1 ? 's' : ''}</p>
+            <p className="text-gray-600">{groupedByDate[date].length} destination{groupedByDate[date].length !== 1 ? 's' : ''}</p>
           </div>
           
           <div className="divide-y divide-gray-200">
             {groupedByDate[date].map((plan) => (
               <div key={plan._id} className="p-4 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-medium text-lg text-gray-800">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                  <h3 className="font-medium text-lg text-gray-800 mb-2 sm:mb-0">
                     {plan.destinations.join(', ')}
                   </h3>
                   {plan.province && (
-                    <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full capitalize">
+                    <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full capitalize w-fit">
                       {plan.province}
                     </span>
                   )}
                 </div>
                 
                 <div className="flex justify-end space-x-2 mt-3">
-                  {/* <button className="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md text-sm transition-colors">
-                    Edit
-                  </button> */}
-                  {/* <button className="px-3 py-1 bg-red-50 hover:bg-red-100 text-red-700 rounded-md text-sm transition-colors">
-                    Delete
-                  </button> */}
-
-                  <button className="px-3 py-1 bg-red-50 hover:bg-[green] text-red-700 rounded-md text-sm transition-colors">
-                    Book
-                  </button>
+                  {
+                    new Date(plan.date) > new Date() ? (
+                      <button className="px-3 py-1 bg-primary hover:bg-green-600 text-white rounded-md text-sm transition-colors">
+                        Book
+                      </button>
+                    ) : (
+                      <button className="px-3 py-1 bg-red-400 cursor-not-allowed text-white rounded-md text-sm transition-colors">
+                        Expired
+                      </button>
+                    )
+                  }
                 </div>
               </div>
             ))}
