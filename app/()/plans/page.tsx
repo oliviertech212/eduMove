@@ -129,7 +129,7 @@ const TransporterSpotManagement = () => {
   const getallTravelPlans = async () => {
 
     try {
-      const response = await axios.get(process.env.NEXT_PUBLIC_API_URL+'plans'); 
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}plans`); 
       console.log("trvel plan",response.data);
       setLoadingPlans(false);
       

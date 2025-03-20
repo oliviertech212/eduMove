@@ -1,5 +1,6 @@
 "use client";
 
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { 
   FaPlus, 
@@ -501,6 +502,22 @@ const TransporterSpotManagement = () => {
   const getDestinationName = (id: string) => {
     return destinations.find(dest => dest.id === id)?.name || 'Unknown';
   };
+
+  const getallTravelSchedule = async () => {
+
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}transporters/67d31eaf05694a416cba7702/schedules`); 
+      console.log("trvel plan",response.data);
+      
+      
+      // setTravelPlans(response.data);
+    } catch (error) {
+      // setLoadingPlans(false);
+      console.error('Error fetching travel plans:', error);
+      toast.error('Failed to load travel plans. Please try again.');
+    }
+  }
+  
   
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;

@@ -171,7 +171,7 @@ export default function Register() {
         <Button
           variant="secondary"
           type="submit"
-           className="w-full bg-primary text-white hover:bg-blue-400 "
+           className="w-full bg-primary disabled cursor-not-allowed text-white hover:bg-blue-400 "
           disabled={loading}
         >
           {loading ? "Registering..." : "Register"}
