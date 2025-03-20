@@ -120,7 +120,8 @@ export function AppSidebar() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
-      const token = user ? JSON.parse(user).token : null;
+      const savedUser = user ? JSON.parse(user) : null;
+      const token = localStorage.getItem("token");
       const savedRole = localStorage.getItem("userRole") as Role | null;
 
       if (savedRole) {

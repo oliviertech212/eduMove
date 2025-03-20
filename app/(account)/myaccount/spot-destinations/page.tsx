@@ -1,6 +1,8 @@
 "use client";
 
+import { ScheduleType } from '@/types';
 import axios from 'axios';
+import { set } from 'date-fns';
 import React, { useState, useEffect } from 'react';
 import { 
   FaPlus, 
@@ -65,6 +67,9 @@ type Booking = {
 const TransporterSpotManagement = () => {
   // State for active tab
   const [activeTab, setActiveTab] = useState<'trips' | 'bookings'>('trips');
+
+  const [travelSchedule , setTravelSchedule ] = useState<ScheduleType[]>([]);
+  const [loadschedule, setLoadSchedule] = useState(true);
   
   // State for bus trips
   const [busTrips, setBusTrips] = useState<BusTrip[]>([]);
@@ -372,17 +377,17 @@ const TransporterSpotManagement = () => {
   };
   
   // Open form for editing trip
-  const handleEditTrip = (trip: BusTrip) => {
-    setEditingTrip(trip);
-    setTripForm({
-      destinationId: trip.destinationId,
-      departureDate: trip.departureDate,
-      departureTime: trip.departureTime,
-      totalCapacity: trip.totalCapacity,
-      price: trip.price,
-      expectedTime: trip.expectedTime || '',
-      fromId: trip.fromId
-    });
+  const handleEditTrip = (trip: ScheduleType) => {
+    // setEditingTrip(trip);
+    // setTripForm({
+    //   destinationId: trip.destinationId,
+    //   departureDate: trip.departureDate,
+    //   departureTime: trip.departureTime,
+    //   totalCapacity: trip.totalCapacity,
+    //   price: trip.price,
+    //   expectedTime: trip.expectedTime || '',
+    //   fromId: trip.fromId
+    // });
     setShowTripForm(true);
   };
   
@@ -504,23 +509,44 @@ const TransporterSpotManagement = () => {
   };
 
   const getallTravelSchedule = async () => {
+    
+    const user = localStorage.getItem("user");
+    const savedUser = user ? JSON.parse(user) : null;
+
 
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}transporters/67d31eaf05694a416cba7702/schedules`); 
-      console.log("trvel plan",response.data);
-      
-      
-      // setTravelPlans(response.data);
+      console.log("trvel plan",response.data.data.schedules);
+      setLoadSchedule(false);
+      setTravelSchedule (response.data.data.schedules);
     } catch (error) {
-      // setLoadingPlans(false);
+      setLoadSchedule(false);
       console.error('Error fetching travel plans:', error);
       toast.error('Failed to load travel plans. Please try again.');
     }
   }
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+     getallTravelSchedule(); 
+    }
+  }, []);
   
   
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+  
+
+  if (loadschedule){
+    
+    
+  return(  <>
+    <div className="mx-auto mt-32 p-4 w-full">
+ 
+ <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+ </div>
+</>)
   }
   
   return (
@@ -689,102 +715,100 @@ const TransporterSpotManagement = () => {
             </div>
           )}
           
-          {/* Trips Table */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destination</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Available</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {busTrips.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
-                      No trips available. Add a new trip to get started.
-                    </td>
-                  </tr>
-                ) : (
-                  busTrips.map(trip => (
-                    <tr key={trip.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <FaMapMarkerAlt className="text-primary mr-2" />
-                          <div>
-                            <div className="font-medium">{trip.destinationName}</div>
-                            <div className="text-sm text-gray-500">{trip.district}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex flex-col">
-                          <div className="flex items-center">
-                            <FaCalendarAlt className="text-gray-400 mr-1" />
-                            <span>{new Date(trip.departureDate).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <FaClock className="mr-1" />
-                            <span>{trip.departureTime}</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <FaBus className="text-gray-400 mr-2" />
-                          <span>{trip.totalCapacity}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          trip.availableSpots === 0 
-                            ? 'bg-red-100 text-red-800' 
-                            : trip.availableSpots < 5 
-                              ? 'bg-yellow-100 text-yellow-800' 
-                              : 'bg-green-100 text-green-800'
-                        }`}>
-                          {trip.availableSpots}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        RWF {trip.price.toLocaleString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          trip.status === 'Active' 
-                            ? 'bg-green-100 text-green-800' 
-                            : trip.status === 'Cancelled' 
-                              ? 'bg-red-100 text-red-800' 
-                              : 'bg-blue-100 text-blue-800'
-                        }`}>
-                          {trip.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button 
-                          onClick={() => handleEditTrip(trip)}
-                          className="text-indigo-600 hover:text-indigo-900 mr-3"
-                        >
-                          <FaEdit />
-                        </button>
-                        <button 
-                          onClick={() => handleDeleteTrip(trip.id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          <FaTrash />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+         {/* Trips Table */}
+<div className="bg-white rounded-lg shadow overflow-hidden">
+  <table className="min-w-full divide-y divide-gray-200">
+    <thead className="bg-gray-50">
+      <tr>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destination</th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure Time</th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Available</th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+      </tr>
+    </thead>
+    <tbody className="bg-white divide-y divide-gray-200">
+      {travelSchedule.length === 0 ? (
+        <tr>
+          <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+            No trips available. Add a new trip to get started.
+          </td>
+        </tr>
+      ) : (
+        travelSchedule.flatMap((trip) => (
+          // Map each trip to multiple rows, one for each time slot
+          trip.timeSlots.map((slot, slotIndex) => (
+            <tr key={`${trip._id}-${slotIndex}`} className={`hover:bg-gray-50 ${slotIndex !== 0 && 'border-t border-dashed border-gray-100'}`}>
+              {/* Only show departure/destination on first slot row */}
+              <td className="px-6 py-4 whitespace-nowrap">
+                {slotIndex === 0 ? (
+                  <div className="flex items-center">
+                    <FaMapMarkerAlt className="text-primary mr-2" />
+                    <div className="font-medium">{trip.departure}</div>
+                  </div>
+                ) : null}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {slotIndex === 0 ? (
+                  <div className="flex items-center">
+                    <FaMapMarkerAlt className="text-primary mr-2" />
+                    <div className="font-medium">{trip.destination}</div>
+                  </div>
+                ) : null}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                  <FaClock className="text-gray-400 mr-2" />
+                  <span>{slot.time}</span>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center">
+                  <FaBus className="text-gray-400 mr-2" />
+                  <span>20</span>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className={`px-2 py-1 rounded-full text-xs ${
+                  slot.slots === 0 
+                    ? 'bg-red-100 text-red-800' 
+                    : slot.slots < 5 
+                      ? 'bg-yellow-100 text-yellow-800' 
+                      : 'bg-green-100 text-green-800'
+                }`}>
+                  {slot.slots}
+                </span>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {slotIndex === 0 ? `RWF ${trip.price.toLocaleString()}` : null}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                {slotIndex === 0 ? (
+                  <>
+                    <button 
+                      onClick={() => handleEditTrip(trip)}
+                      className="text-indigo-600 hover:text-indigo-900 mr-3"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteTrip(trip._id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      <FaTrash />
+                    </button>
+                  </>
+                ) : null}
+              </td>
+            </tr>
+          ))
+        ))
+      )}
+    </tbody>
+  </table>
+</div>
         </div>
       )}
       

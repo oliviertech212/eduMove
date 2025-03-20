@@ -60,18 +60,18 @@ export default function Login() {
         // Save user data to localStorage
         if (typeof window !== "undefined") {
           localStorage.setItem(
-            "user",
-            JSON.stringify(
-               response.data.user
-            )
+            "user",  JSON.stringify(response.data.data.user)
+            
+               
+            
           );
 
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("userRole", response.data.user?.role);
+          localStorage.setItem("userRole", response.data.data.user?.role);
         }
   
         toast.success("Login successful");
-        console.log("response", response.data);
+        console.log("response", response.data.data);
   
         // Redirect to dashboard or another page
         router.push("/myaccount");

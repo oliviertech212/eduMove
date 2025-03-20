@@ -41,23 +41,7 @@ export type TravelPlan = {
   };
 
 
-//   "user": {
-//     "_id": "67d31eaf05694a416cba7702",
-//     "name": "Horizon",
-//     "email": "horizon@example.com",
-//     "phoneNumber": "3402809483",
-//     "role": "transporter",
-//     "areaOfOperations": [
-//         "huhanga",
-//         "nyanza",
-//         "huye",
-//         "nyamagabe",
-//         "ruhango"
-//     ],
-//     "createdAt": "2025-03-13T18:06:39.159Z",
-//     "updatedAt": "2025-03-13T18:06:39.159Z",
-//     "__v": 0
-// }
+// api responses
 
 export type UserType = {
     _id: string;
@@ -66,6 +50,21 @@ export type UserType = {
     phoneNumber: string;
     role: string;
     areaOfOperations?: string[];
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+export type ScheduleType = {
+    _id: string;
+    plan: string;
+    departure: string;
+    destination: string;
+    price: number;
+    transporter: string;
+    timeSlots: {
+      time: string;
+      slots: number;
+    }[];
     createdAt: string;
     updatedAt: string;
     __v: number;

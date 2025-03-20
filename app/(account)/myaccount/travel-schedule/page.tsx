@@ -168,7 +168,7 @@ const TransporterSpotManagement = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
-      const token = user ? JSON.parse(user).token : null;
+      const savedUser = user ? JSON.parse(user) : null;
       const savedRole = localStorage.getItem("userRole") as Role | null;
       
       if (savedRole) {
