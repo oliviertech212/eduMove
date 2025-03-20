@@ -36,7 +36,7 @@ export const ParallaxScene = () => {
     //  className=" !m-auto  !w-[100%] !h-[100%] !overflow-hidden relative text-center"
     // > 
     // <Parallax pages={7} ref={ref} className="w-full h-screen">
-  <Parallax pages={7} ref={ref} className="w-full h-screen overflow-hidden">
+  <Parallax pages={8} ref={ref} className="w-full h-screen overflow-hidden">
 
       {/* <LandingPage /> */}
       <Header  />
@@ -99,9 +99,11 @@ export const ParallaxScene = () => {
     height: "500px",
     position: "relative",
     margin: "0 auto",
+    filter: "blur(3px)",
     backgroundColor: "red",
-    backgroundImage: "url('/images/rwanda.jpeg')",
+    backgroundImage: "url('/images/dashboard.png')",
     backgroundSize: "cover",
+    
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
   }}
@@ -125,7 +127,7 @@ export const ParallaxScene = () => {
          </h1>
        </ParallaxLayer>
 
-       <ParallaxLayer offset={3.2} speed={2} style={{ zIndex: 2 ,  backgroundImage: "url('/images/rwanda.jpeg')",
+       <ParallaxLayer offset={3.2} speed={2} style={{ zIndex: 2 ,  backgroundImage: "url('/images/dashboard.png')",
           backgroundSize:"cover",
             backgroundPosition: "center",
             width: "70%",
@@ -134,7 +136,7 @@ export const ParallaxScene = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-
+            filter: "blur(3px)",
             backgroundRepeat: "no-repeat" }}
             className="text-4xl font-bold ml-[10%] !text-white  rounded-xl"
        
@@ -147,10 +149,31 @@ export const ParallaxScene = () => {
        </ParallaxLayer>
 
 
+{/* additional  */}
+       <ParallaxLayer offset={5.2} speed={5} style={{ zIndex: 2 ,  backgroundImage: "url('/images/dashboard.png')",
+          backgroundSize:"cover",
+            backgroundPosition: "center",
+            width: "90%",
+            height: "500px",
+            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          
+            backgroundRepeat: "no-repeat" }}
+            className="text-4xl font-bold ml-[10%] !text-white  rounded-xl"
+       
+        onClick={() => ref.current?.scrollTo(0)}
+       
+       >
+      
+       </ParallaxLayer>
+
+
 
       {/* <ParallaxLayer offset={4} speed={0.10} style={{ zIndex: 2 }}>
         <Image
-          src="/images/rwanda.jpeg" 
+          src="/images/dashboard.png" 
           alt="Globe"
           width={200}
           height={200}
