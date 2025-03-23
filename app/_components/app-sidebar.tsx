@@ -33,7 +33,7 @@ import {
 } from "react-icons/fa";
 import { toast } from "sonner";
 
-export type Role = "student" | "parent" | "school" | "transporter" | "Authority";
+export type Role = "student" | "parent" | "school" | "transporter" | "authority";
 
 const roleBasedMenuItems = {
   student: [
@@ -62,7 +62,7 @@ const roleBasedMenuItems = {
     { title: "Student's Boarding ", url: "/myaccount/students-boarding", icon: FaUsers },
     { title: "Student's Arrivals", url: "/myaccount/students-arrivals", icon: FaUsers },
   ],
-  Authority: [
+  authority: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
     { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
   ],
@@ -169,7 +169,7 @@ export function AppSidebar() {
                     <option value="student">Student</option>
                     <option value="parent">Parent</option>
                     <option value="school">School</option>
-                    <option value="Authority">Authority</option>
+                    <option value="authority">Authority</option>
                     <option value="transporter">Transport Company</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
