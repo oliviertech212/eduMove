@@ -26,8 +26,9 @@ const TravelPlanManagement = () => {
   
   const [travelPlans, setTravelPlans] = useState<TravelPlan[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const token = localStorage.getItem("token");
+ 
   const createTravelPlan = async (data: { date: string; destinations: string[]; province?: string }) => {
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}plans`, data,{
         headers: {

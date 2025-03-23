@@ -228,7 +228,7 @@ const TravelPlanList = ({ travelPlans, onDelete }: TravelPlanProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {travelPlans.map(plan => (
-        <div key={plan._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div key={plan._id} className={`bg-white rounded-lg shadow-md overflow-hidden ${ new Date(plan.date) > new Date()? 'border-4 border-l-primary' : ' border-4 border-l-red-400'}`}>
           <div className="p-4 bg-blue-100">
             <div className="flex justify-between items-start">
               <h3 className="font-semibold text-lg">Travel Plan</h3>
