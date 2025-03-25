@@ -8,7 +8,7 @@ import TransportCoDashboard from "@/app/_components/dasboard-overview/transport-
 import TransporterSpotManagement from "./travel-schedule/page";
 import TravelPlanManagement from "./travel-plans/page";
 
-type Role = "student" | "parent" | "school" | "transporter"| "authority";
+type Role = "student" | "parent" | "school" | "transporter"| "authority" | "admin";
 
 const Home = () => {
   const [role, setRole] = useState<Role | null>(null);
@@ -29,6 +29,7 @@ const Home = () => {
       {role === "school" && <SchoolDashboard />}
       {role === "transporter" && <TransportCoDashboard />}
       {role === "authority" && <TravelPlanManagement />}
+      {role === "admin" && <TransporterSpotManagement />}
       {!role && <p>Loading dashboard...</p>}
     </div>
   );

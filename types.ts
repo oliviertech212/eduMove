@@ -43,6 +43,7 @@ export type TravelPlan = {
 
 // api responses
 
+
 export type UserType = {
     _id: string;
     name: string;
@@ -50,6 +51,10 @@ export type UserType = {
     phoneNumber: string;
     role: string;
     areaOfOperations?: string[];
+    district?: string;
+    sector?: string;
+    cell?: string;
+    village?: string;
     createdAt: string;
     updatedAt: string;
     __v: number;

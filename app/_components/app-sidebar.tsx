@@ -33,7 +33,7 @@ import {
 } from "react-icons/fa";
 import { toast } from "sonner";
 
-export type Role = "student" | "parent" | "school" | "transporter" | "authority";
+export type Role = "student" | "parent" | "school" | "transporter" | "authority"| "admin";
 
 const roleBasedMenuItems = {
   student: [
@@ -66,6 +66,16 @@ const roleBasedMenuItems = {
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
     { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
   ],
+  //admin role 
+  admin : [
+
+    { title: "Dashboard", url: "/myaccount", icon: FaHome },
+    { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
+    { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
+    {title:"User Management",url:"/myaccount/user-management",icon:FaUserGraduate},
+
+
+  ]
 };
 
 export function AppSidebar() {
@@ -73,6 +83,7 @@ export function AppSidebar() {
     localStorage.clear();
     window.location.href = "/";
   };
+  const [activeTab, setActiveTab] = useState("myaccount");
   const [user, setUser] = useState<any>();
   const [isMounted, setIsMounted] = useState(false);
   const [role, setRole] = useState<Role>("student");
@@ -88,34 +99,39 @@ export function AppSidebar() {
     localStorage.setItem("userRole", value);
   };
 
-  const handleGetProfile = async (token: string) => {
-    try {
-      const res = await axios.get("/api/v1/auth/profile", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const handlechangeActiveTab = (tab: string) => {
+    setActiveTab(tab);
+    localStorage.setItem("activeTab", tab);
+  }
 
-      if (res.data.user) {
-        setUser(res.data.user);
-        if (res.data.user.role) {
-          setRole(res.data.user.role as Role);
-        }
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            email: res.data.user.email,
-            name: res.data.user.name,
-            token: token,
-          })
-        );
-      }
-    } catch (err) {
-      handleLogout();
-      toast.error("Login session expired. Please login again.");
-      router.push("/signin");
-    }
-  };
+  // const handleGetProfile = async (token: string) => {
+  //   try {
+  //     const res = await axios.get("/api/v1/auth/profile", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+
+  //     if (res.data.user) {
+  //       setUser(res.data.user);
+  //       if (res.data.user.role) {
+  //         setRole(res.data.user.role as Role);
+  //       }
+  //       localStorage.setItem(
+  //         "user",
+  //         JSON.stringify({
+  //           email: res.data.user.email,
+  //           name: res.data.user.name,
+  //           token: token,
+  //         })
+  //       );
+  //     }
+  //   } catch (err) {
+  //     handleLogout();
+  //     toast.error("Login session expired. Please login again.");
+  //     router.push("/signin");
+  //   }
+  // };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -171,17 +187,20 @@ export function AppSidebar() {
                     <option value="school">School</option>
                     <option value="authority">Authority</option>
                     <option value="transporter">Transport Company</option>
+                    <option value="admin">Admin</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                     <FaAngleDown className="h-4 w-4 text-white" />
                   </div>
                 </div>
               </div>
-              {currentMenuItems.map((item) => (
+              {currentMenuItems.map((item:any) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
                     isActive={currentPath === item.url}
+                    onClick={() => handlechangeActiveTab(item.url)}
+
                   >
                     <Link href={item.url} className="flex items-center gap-3 hover:translate-z-5">
                       <item.icon className="w-5 h-5" />

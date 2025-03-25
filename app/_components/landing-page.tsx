@@ -45,6 +45,22 @@ export const Header = () => {
         }
     }
 
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            let activeTab = localStorage.getItem("activeTab");
+            console.log("activeTab", activeTab);
+            
+            if (activeTab) {
+                
+                if (activeTab.includes("myaccount")) {
+                    router.push(activeTab)
+                }
+                setActiveTab(activeTab);  
+            }
+           
+        }
+    }, []);
+
     
       
 
