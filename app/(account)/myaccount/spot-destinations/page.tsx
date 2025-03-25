@@ -1,6 +1,6 @@
 "use client";
 
-import { TravelPlan } from '@/app/_components/travel-plan';
+import { TravelPlan } from '@/app/_components/travel-plans';
 import { ScheduleType, UserType } from '@/types';
 import axios from 'axios';
 import { set } from 'date-fns';

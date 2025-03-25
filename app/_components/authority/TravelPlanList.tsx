@@ -175,8 +175,9 @@
 
 
 'use client';
-import { FaCalendarAlt, FaMapMarkerAlt, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import { useState } from 'react';
+import { TravelPlan } from '../travel-plans';
 
 type TravelPlanProps = {
   travelPlans: {
@@ -187,10 +188,15 @@ type TravelPlanProps = {
     __v?: number;
   }[];
   onDelete?: (id: string) => Promise<void>;
+  isadmin?: boolean | false;
 };
 
-const TravelPlanList = ({ travelPlans, onDelete }: TravelPlanProps) => {
+const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  const handleBookingModel = (paln:TravelPlan) => {
+   
+  };
 
   const handleDelete = async (id: string) => {
     if (!onDelete) return;
@@ -266,7 +272,7 @@ const TravelPlanList = ({ travelPlans, onDelete }: TravelPlanProps) => {
             </div>
           </div>
           
-          <div className="border-t p-4 flex justify-between">
+          {isadmin? <div className="border-t p-4 flex justify-between">
             <div className="flex space-x-2">
               <button 
                 className="text-blue-500 hover:text-blue-700"
@@ -285,7 +291,22 @@ const TravelPlanList = ({ travelPlans, onDelete }: TravelPlanProps) => {
                 </button>
               )}
             </div>
+          </div>:  
+
+          <div className={`${ new Date(plan.date) > new Date()?"":"hidden"} `}>
+            <button 
+                        className="bg-primary ml-4 mb-2 text-white px-4 py-2 rounded-md flex items-center gap-2"
+                       onClick={()=>handleBookingModel(plan)}
+                      >
+                          <FaPlus />Book
+            </button>
+
           </div>
+          
+          
+          
+          
+        }
         </div>
       ))}
     </div>

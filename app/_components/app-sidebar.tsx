@@ -32,6 +32,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { toast } from "sonner";
+import { UserType } from "@/types";
 
 export type Role = "student" | "parent" | "school" | "transporter" | "authority"| "admin";
 
@@ -88,6 +89,7 @@ export function AppSidebar() {
   const [isMounted, setIsMounted] = useState(false);
   const [role, setRole] = useState<Role>("student");
   const router = useRouter();
+  const [saveduser, setSavedUser] = useState<UserType>();
 
   useEffect(() => {
     setIsMounted(true);
@@ -156,6 +158,20 @@ export function AppSidebar() {
     }
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      const savedUser = user ? JSON.parse(user) : null;
+      const savedRole = localStorage.getItem("userRole") as Role | null;
+      setSavedUser(savedUser);
+      
+      
+      if (savedRole) {
+       
+      }
+    }
+  }, []);
+
   if (!isMounted) return null;
 
   const currentMenuItems = roleBasedMenuItems[role] || [];
@@ -173,8 +189,8 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <div className="px-2 relative">
-                <label className="block text-sm font-medium mb-1 text-white">Switch Role</label>
-                <div className="relative">
+                <label className="block text-sm font-medium mb-1 text-white">{saveduser?.name} as {saveduser?.role}</label>
+                {/* <div className="relative">
                   <select
                     name="role-selector"
                     id="role-selector"
@@ -192,7 +208,7 @@ export function AppSidebar() {
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                     <FaAngleDown className="h-4 w-4 text-white" />
                   </div>
-                </div>
+                </div> */}
               </div>
               {currentMenuItems.map((item:any) => (
                 <SidebarMenuItem key={item.title}>

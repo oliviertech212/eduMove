@@ -1,5 +1,7 @@
-"use client";
 
+
+'use client';
+import TravelPlanManagement from "@/app/_components/travel-plans";
 import { Role } from '@/app/_components/app-sidebar';
 import { BookingModelForm } from '@/app/_components/forms/bookingmodel';
 import TripFilter from '@/app/_components/forms/filters/topfilter';
@@ -20,7 +22,15 @@ import {
 } from 'react-icons/fa';
 import { toast } from 'sonner';
 import axios from 'axios';
-import TravelPlansList, { TravelPlan } from '@/app/_components/travel-plan';
+import { TravelPlan } from "@/app/_components/travel-plans";
+
+
+
+
+
+
+
+
 
 // Types
 type Destination = {
@@ -415,12 +425,8 @@ const handleTripDestination = (
       {
         loadingPlans &&  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
       }
-      <h1 className="text-3xl font-bold mb-6">Travel Plan</h1>
-      <TravelPlansList
-        travelPlans={travelPlans} 
-        isLoading={loadingPlans} 
-      />
-      
+      <TravelPlanManagement isadmin={false}/>
+     
       {/* Tabs */}
       <div className="flex border-b mb-6">
         <button 
