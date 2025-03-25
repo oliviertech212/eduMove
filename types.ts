@@ -43,6 +43,15 @@ export type TravelPlan = {
 
 // api responses
 
+export type TravelPlan1 = {
+  _id: string;
+  date: string | Date;
+  destinations: string[];
+  province?: string;
+  __v?: number;
+};
+
+
 
 export type UserType = {
     _id: string;
@@ -66,6 +75,8 @@ export type ScheduleType = {
     destination: string;
     price: number;
     transporter: string;
+    departureTime?: string;
+    expectedArrivalTime?: string;
     timeSlots: {
       time: string;
       slots: number;

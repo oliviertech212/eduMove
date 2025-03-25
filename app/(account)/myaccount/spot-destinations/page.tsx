@@ -45,7 +45,7 @@ const TransporterSpotManagement = () => {
   const [selectedPlan, setSelectedPlan] = useState<TravelPlan | null>(null);
   const [tripForm, setTripForm] = useState({
     plan: '',
-    transporter: user?._id || '',
+    transporter: user?._id,
     price: 0,
     departure: '',
     destination: '',
@@ -66,7 +66,9 @@ const TransporterSpotManagement = () => {
         toast.success('Trip updated successfully!');
       } else {
 
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}schedules`, tripForm ,{
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}schedules`, {...tripForm,
+          transporter: user?._id,
+        } ,{
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -74,6 +76,7 @@ const TransporterSpotManagement = () => {
         }); 
       
         toast.success('Trip added successfully!');
+        getallTravelSchedule();
       }
       
       setShowTripForm(false);
@@ -151,6 +154,7 @@ const TransporterSpotManagement = () => {
     const handleTimeSlotChange = (index:any, field:any, value :any) => {
       const updatedSlots = [...tripForm.timeSlots];
       updatedSlots[index][field] = field === 'slots' ? parseInt(value) : value;
+      
       setTripForm({
         ...tripForm,
         timeSlots: updatedSlots
@@ -179,7 +183,7 @@ const TransporterSpotManagement = () => {
     const user = localStorage.getItem("user");
     const savedUser = user ? JSON.parse(user) : null;
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}transporters/67d31eaf05694a416cba7702/schedules`); 
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}transporters/${savedUser?._id}/schedules`); 
       console.log("trvel plan",response.data.data.schedules);
       setLoadSchedule(false);
       setTravelSchedule (response.data.data.schedules);
@@ -205,7 +209,10 @@ const TransporterSpotManagement = () => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem("user");
       const savedUser = user ? JSON.parse(user) : null;
+      console.log("user",savedUser );
+      
       setUser(savedUser);
+
       
      getallTravelSchedule(); 
      getallTravelPlans();
@@ -236,7 +243,7 @@ const TransporterSpotManagement = () => {
           className={`py-2 px-4 font-semibold ${activeTab === 'trips' ? 'border-b-2 border-primary text-primary' : 'text-gray-600'}`}
           onClick={() => setActiveTab('trips')}
         >
-          Available Spots
+          Available Spots 
         </button>
         <button 
           className={`py-2 px-4 font-semibold ${activeTab === 'bookings' ? 'border-b-2 border-primary text-primary' : 'text-gray-600'}`}
@@ -247,7 +254,7 @@ const TransporterSpotManagement = () => {
       </div>
       
       {/* Available Spots Tab */}
-      {activeTab === 'trips' && (
+      {activeTab === 'trips' && ( 
         <div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Available Bus Trips</h2>
@@ -305,7 +312,10 @@ const TransporterSpotManagement = () => {
                 )}
                 
                 {tripForm.timeSlots.map((slot, index) => (
-                  <div key={index} className="flex items-center gap-2 mb-2 p-2 border rounded-md bg-gray-50">
+                 
+
+                 <div key={index} className='bg-primary p-2 mt-2'>
+                   <div  className="flex items-center gap-2 mb-2 p-2 border rounded-md bg-gray-50">
                     <div className="flex-1">
                       <label className="block text-xs text-gray-500 mb-1">Time</label>
                       <input
@@ -327,6 +337,11 @@ const TransporterSpotManagement = () => {
                         required
                       />
                     </div>
+                    {/* "busNumber": "RAB2343",
+                    "expectedArivalTime": "2025-03-13T18:06:39.159Z" */}
+
+                   
+
                     <button
                       type="button"
                       onClick={() => removeTimeSlot(index)}
@@ -335,6 +350,38 @@ const TransporterSpotManagement = () => {
                       <FiTrash2 size={16} />
                     </button>
                   </div>
+                   <div  className="flex items-center gap-2 mb-2 p-2 border rounded-md bg-gray-50">
+
+<div className="flex-1">
+<label className="block text-xs text-gray-500 mb-1">Bus Number</label>
+<input
+  type="text"
+  value={slot.busNumber}
+  onChange={(e) => handleTimeSlotChange(index, 'busNumber', e.target.value)}
+  className="w-full p-2 border rounded-md text-sm"
+  required
+/>
+</div>
+
+<div className="flex-1">
+<label className="block text-xs text-gray-500 mb-1">Expected Arrival Time</label>
+<input
+  type="datetime-local"
+  value={slot.expectedArivalTime}
+  onChange={(e) => handleTimeSlotChange(index, 'expectedArrivalTime', e.target.value)}
+  className="w-full p-2 border rounded-md text-sm"
+  required
+/>
+</div>
+
+                    
+                    </div>
+
+                 </div>
+
+
+
+
                 ))}
               </div>
 
