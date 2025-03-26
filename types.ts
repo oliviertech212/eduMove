@@ -80,6 +80,8 @@ export type ScheduleType = {
     timeSlots: {
       time: string;
       slots: number;
+      busNumber: any;
+      expectedArivalTime:Date| string
     }[];
     createdAt: string;
     updatedAt: string;
