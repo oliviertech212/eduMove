@@ -193,7 +193,6 @@ const TravelPlanManagement = (
         <div className="text-center py-8">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
           <p className="mt-2">Loading travel plans...</p>
-          
         </div>
       ) : (
         <TravelPlanList 

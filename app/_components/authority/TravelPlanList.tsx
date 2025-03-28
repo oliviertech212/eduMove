@@ -37,11 +37,6 @@ const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => 
   const [selectedSchedule, setSelectedSchedule] = useState<ScheduleType | null>(null);
   const [departureTime, setDepartureTime] = useState<string | null>(null);
   const [expectedArrivalTime, setExpectedArrivalTime] = useState<string | null>(null);
-  
-  // "school": "67de5a6898a40cb50b1ef631",
-  // "expectedArrivalTime": "2025-04-15T10:00:00.000Z",
-  // "status": "Scheduled",
-  // "travelNumber": "TRV123456"
   const [travelForm, setTravelForm] = useState({
     plan: selectedPlan?._id || '',  
     departure: '',
@@ -165,51 +160,62 @@ const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => 
   }
   };
 
-  // Handle form submission
-  const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const token = localStorage.getItem('token');
 
-    try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}travels`, 
-        {
-        
+const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const token = localStorage.getItem("token");
 
-    guardian: travelForm.guardian,
-    student: travelForm.student,
-    school: travelForm.school,
-    expectedArrivalTime: travelForm.expectedArrivalTime,
-    status: travelForm.status,
-    travelNumber: travelForm.travelNumber,
-          travelDetails: {
-            plan: {
-              date: selectedPlan.date,
-              id: selectedPlan._id
-            },
-            departure: travelForm.departure,
-            destination: travelForm.destination,
-            price: travelForm.price,
-            transporter: transporters.find(t => t._id === travelForm.transporter),
-            departureTime: departureTime,
-            expectedArrivalTime: expectedArrivalTime || departureTime
-          }
+  try {
+    const selectedTransporter = transporters.find((t) => t._id === travelForm.transporter);
+
+    const transporter = selectedTransporter
+      ? {
+          id: selectedTransporter._id,
+          name: selectedTransporter.name,
+          contact: selectedTransporter.contact ||  "+250789123456",
+          bussNumber: selectedTransporter.bussNumber || "RAB123C"
         }
-        , 
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            // 'Authorization': `Bearer ${token}`
-          }
-        }
-      );
+      : null; // Ensure proper handling if no transporter is found
 
-      toast.success('Ticket booked successfully');
-      setShowForm(false);
-    } catch (error) {
-      console.error('Error booking ticket:', error);
-      toast.error('Failed to book ticket');
-    }
-  };
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}travels`,
+      {
+        travelDetails: {
+          plan: {
+            date: selectedPlan.date,
+            id: selectedPlan._id,
+          },
+          departure: travelForm.departure,
+          destination: travelForm.destination,
+          price: travelForm.price,
+          transporter: transporter, 
+          departureTime: departureTime,
+          // departureTime: "18:30 PM",
+          expectedArrivalTime: expectedArrivalTime || "2025-05-02T00:00:00.000Z"
+        },
+        guardian: travelForm.guardian,
+        student: travelForm.student,
+        school: travelForm.school,
+        status: "Scheduled",
+        travelNumber: "TRV123456",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": `Bearer ${token}`
+        },
+      }
+    );
+
+    toast.success("Ticket booked successfully");
+    setShowForm(false);
+  } catch (error) {
+    console.error("Error booking ticket:", error);
+    toast.error("Failed to book ticket");
+  }
+};
+
+  
 
   // Handle booking model open
   const handleBookingModel = (plan: any) => {
