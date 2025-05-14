@@ -64,12 +64,12 @@ export const Header = () => {
             ${pathname.includes("myaccount") ? "hidden" : ""}
             fixed top-0 left-0 right-0 mx-auto w-full z-50 transition-all duration-300 px-4 py-5 
             ${isFixed ? "bg-black shadow-md" : "bg-[white]"}`}>
-            <div className="flex flex-row items-center justify-between text-primary">
+            <div className="flex flex-row items-center justify-between text-primary font-extrabold">
                 <div className="text-4xl font-clash">eduMove</div>
                 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:block">
-                    <ul className="flex gap-10 font-bold">
+                    <ul className="flex gap-10 font-extrabold">
                     {["Home","Travel Plans", "About", "Contact", "Login"].map((item) => (
                             <motion.li
                                 key={item}
@@ -96,7 +96,7 @@ export const Header = () => {
                 {/* Mobile Navigation */}
                 {isMobileMenuOpen && (
                     <div className="md:hidden absolute top-full left-0 right-0 bg-black">
-                        <ul className="flex flex-col items-center py-4 space-y-4 font-bold">
+                        <ul className="flex flex-col items-center py-4 space-y-4 font-extrabold">
                         {["Home","Travel Plans", "About", "Contact", "Login"].map((item) => (
                                 <motion.li
                                     key={item}
