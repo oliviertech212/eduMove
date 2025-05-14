@@ -63,8 +63,8 @@ export const Header = () => {
         <header className={`
             ${pathname.includes("myaccount") ? "hidden" : ""}
             fixed top-0 left-0 right-0 mx-auto w-full z-50 transition-all duration-300 px-4 py-5 
-            ${isFixed ? "bg-black shadow-md" : "bg-primary"}`}>
-            <div className="flex flex-row items-center justify-between text-white">
+            ${isFixed ? "bg-black shadow-md" : "bg-[white]"}`}>
+            <div className="flex flex-row items-center justify-between text-primary">
                 <div className="text-4xl font-clash">eduMove</div>
                 
                 {/* Desktop Navigation */}
@@ -75,7 +75,7 @@ export const Header = () => {
                                 key={item}
                                 onClick={() => handleItmClick(item)}
                                 whileHover={{ scale: 1.1, color: "#f8f8f8", transition: { duration: 0.3 } }}
-                                className={`cursor-pointer transition-all duration-300 ${activeTab === item ? "underline text-white" : ""}`}
+                                className={`cursor-pointer transition-all duration-300 ${activeTab === item ? "underline " : ""}`}
                             >
                                 {item}
                             </motion.li>
@@ -102,7 +102,7 @@ export const Header = () => {
                                     key={item}
                                     onClick={() => handleItmClick(item)}
                                     whileHover={{ scale: 1.1, color: "#f8f8f8", transition: { duration: 0.3 } }}
-                                    className={`cursor-pointer transition-all duration-300 ${activeTab === item ? "underline text-white" : ""}`}
+                                    className={`cursor-pointer transition-all duration-300 ${activeTab === item ? "underline " : ""}`}
                                 >
                                     {item}
                                 </motion.li>

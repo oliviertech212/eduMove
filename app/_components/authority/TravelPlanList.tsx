@@ -250,8 +250,12 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
       {/* Existing travel plan rendering code... */}
       
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        onClick={()=>{}}
+        >
+          <div
+          onClick={()=>{}}
+          className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-xl font-semibold mb-4">Book a Ticket</h3>
 
             <div className="p-4">
