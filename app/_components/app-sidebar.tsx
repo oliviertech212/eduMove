@@ -58,7 +58,7 @@ const roleBasedMenuItems = {
   ],
   transporter: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
-    { title: "Fleet Management", url: "/myaccount/fleet", icon: FaBus },
+    // { title: "Fleet Management", url: "/myaccount/fleet", icon: FaBus },
     { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
     { title: "Student's Boarding ", url: "/myaccount/students-boarding", icon: FaUsers },
     { title: "Student's Arrivals", url: "/myaccount/students-arrivals", icon: FaUsers },
@@ -71,7 +71,7 @@ const roleBasedMenuItems = {
   admin : [
 
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
-    { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
+    // { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
     { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
     {title:"User Management",url:"/myaccount/user-management",icon:FaUserGraduate},
 

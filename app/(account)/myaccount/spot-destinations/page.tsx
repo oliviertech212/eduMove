@@ -3,7 +3,7 @@
 import { TravelPlan } from '@/app/_components/travel-plans';
 import { ScheduleType, UserType } from '@/types';
 import axios from 'axios';
-import { set } from 'date-fns';
+import { format, set } from 'date-fns';
 import { FiPlus, FiTrash2, FiX } from 'react-icons/fi';
 import React, { useState, useEffect } from 'react';
 import { 
@@ -18,6 +18,7 @@ import {
   FaUsers
 } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { formatDate } from '@/lib/formatdate';
 
 
 type Booking = {
@@ -31,7 +32,7 @@ type Booking = {
 };
 
 // Available Spots Management Page
-const TransporterSpotManagement = () => {
+const TransporterDestinationSpotManagement = () => {
   const [activeTab, setActiveTab] = useState<'trips' | 'bookings'>('trips');
   const [travelPlans, setTravelPlans] = useState<TravelPlan[]>([]);
   const [travelSchedule , setTravelSchedule ] = useState<ScheduleType[]>([]);
@@ -102,6 +103,20 @@ const TransporterSpotManagement = () => {
       }
     }
 
+    // check on expectederrival time  if not less than selected plan time and date 
+
+    console.log("selected plan",selectedPlan);
+    
+
+    if (name === 'expectedArrivalTime') {
+      const selectedDate = new Date(value);
+      const selectedPlanDate = new Date(selectedPlan?.date || '');
+      if (selectedDate < selectedPlanDate) {
+        toast.error('Expected arrival time cannot be earlier than the selected travel plan date.');
+        return;
+      }
+    }
+
 
     setTripForm({
       ...tripForm,
@@ -154,6 +169,16 @@ const TransporterSpotManagement = () => {
     const handleTimeSlotChange = (index:any, field:any, value :any) => {
       const updatedSlots = [...tripForm.timeSlots];
       updatedSlots[index][field] = field === 'slots' ? parseInt(value) : value;
+
+      // Check if expected arrival time is less than the selected plan date
+      if (field === 'expectedArrivalTime') {
+        const selectedDate = new Date(value);
+        const selectedPlanDate = new Date(selectedPlan?.date || '');
+        if (selectedDate < selectedPlanDate) {
+          toast.error('Expected arrival time cannot be earlier than the selected travel plan date.');
+          return;
+        }
+      }
       
       setTripForm({
         ...tripForm,
@@ -268,8 +293,8 @@ const TransporterSpotManagement = () => {
           
           {/* Trip Form Modal */}
           {showTripForm && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ">
+              <div className="bg-white p-6 rounded-lg shadow-lg  max-w-md w-[500px]">
                 <h3 className="text-xl font-semibold mb-4">
                   {editingTrip ? 'Edit Trip' : 'Add New Trip'}
                 </h3>
@@ -278,7 +303,7 @@ const TransporterSpotManagement = () => {
 
                 <div className="mb-4">
                     <label className="block text-sm font-medium mb-1">To</label>
-                    <select 
+                    {/* <select 
                       name="plan" 
                       value={tripForm.plan} 
                       onChange={handleTripFormChange}
@@ -287,10 +312,67 @@ const TransporterSpotManagement = () => {
                     >
                       <option value="">Select Travel plan</option>
                       {travelPlans.map(dest => (
-                        <option key={dest._id} value={dest._id}>{dest?.province} ({dest.destinations[0]})</option>
-                      ))}
+                        console.log("destination",dest), 
+                        <option key={dest._id} value={dest._id}>{dest?.province} ({dest.destinations[0]}) {formatDate(dest.date)}{format(
+                          new Date(dest.date), ' dd MMMM yyyy HH:mm:ss'
+                        )}
+                       
+                        
+                        <span className={ new Date(dest.date)> new Date() ? 'text-green-600' : 'text-red-600'}>
+                          { new Date(dest.date)> new Date() ? 'Upcoming' : 'Past'}
+                        </span>
+                        
+                        
+                        </option>
+                      )).filter(dest=> format(new Date(dest.date), ' dd MMMM yyyy HH:mm:ss') > format(new Date(), ' dd MMMM yyyy HH:mm:ss'))
+                      
+                      
+                      }
+                    </select> */}
+                    <select 
+                      name="plan" 
+                      value={tripForm.plan} 
+                      onChange={handleTripFormChange}
+                      className="w-full p-2 border rounded-md"
+                      required
+                    >
+                      <option value="">Select Travel plan</option>
+                      {travelPlans
+                        .filter(dest => new Date(dest.date) > new Date())
+                        .map(dest => (
+                          <option key={dest._id} value={dest._id}>
+                            {dest.province} ({dest.destinations.join(', ')}) — {format(new Date(dest.date), ' dd MMMM yyyy HH:mm:ss')}
+                         
+                          </option>
+                        ))}
                     </select>
-                  </div>
+                    
+                                      </div>
+                    
+                    
+                                      {/* {tripForm.plan && (
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium mb-1">Select a Destination</label>
+                        <select
+                          name="destination"
+                          value={tripForm.destination}
+                          onChange={handleTripFormChange}
+                          className="w-full p-2 border rounded-md"
+                          required
+                        >
+                          <option value="">Select one destination</option>
+                          {travelPlans
+                            .find(plan => plan._id === tripForm.plan)
+                            ?.destinations.map((destination, index) => (
+                              <option key={index} value={destination}>
+                                {destination}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    )} */}
+
+
 
                  {/* Time Slots Section */}
               <div className="mb-4">
@@ -352,27 +434,27 @@ const TransporterSpotManagement = () => {
                   </div>
                    <div  className="flex items-center gap-2 mb-2 p-2 border rounded-md bg-gray-50">
 
-<div className="flex-1">
-<label className="block text-xs text-gray-500 mb-1">Bus Number</label>
-<input
-  type="text"
-  value={slot.busNumber}
-  onChange={(e) => handleTimeSlotChange(index, 'busNumber', e.target.value)}
-  className="w-full p-2 border rounded-md text-sm"
-  required
-/>
-</div>
-
-<div className="flex-1">
-<label className="block text-xs text-gray-500 mb-1">Expected Arrival Time</label>
-<input
-  type="datetime-local"
-  value={slot.expectedArivalTime}
-  onChange={(e) => handleTimeSlotChange(index, 'expectedArrivalTime', e.target.value)}
-  className="w-full p-2 border rounded-md text-sm"
-  required
-/>
-</div>
+                    <div className="flex-1">
+                    <label className="block text-xs text-gray-500 mb-1">Bus Number</label>
+                    <input
+                      type="text"
+                      value={slot.busNumber}
+                      onChange={(e) => handleTimeSlotChange(index, 'busNumber', e.target.value)}
+                      className="w-full p-2 border rounded-md text-sm"
+                      required
+                    />
+                    </div>
+                    
+                    <div className="flex-1">
+                    <label className="block text-xs text-gray-500 mb-1">Expected Arrival Time</label>
+                    <input
+                      type="datetime-local"
+                      value={slot.expectedArivalTime}
+                      onChange={(e) => handleTimeSlotChange(index, 'expectedArrivalTime', e.target.value)}
+                      className="w-full p-2 border rounded-md text-sm"
+                      required
+                    />
+                    </div>
 
                     
                     </div>
@@ -389,7 +471,7 @@ const TransporterSpotManagement = () => {
                 <div className="mb-4">
                     <label className="block text-sm font-medium mb-1">From</label>
                     <div>
-                      <label className="block text-sm font-medium mb-1">Departure Time</label>
+                      <label className="block text-sm font-medium mb-1">Departure </label>
                       <input 
                         type="text"
                         name="departure" 
@@ -399,18 +481,7 @@ const TransporterSpotManagement = () => {
                         required
                       />
                     </div>
-                    {/* <select 
-                      name="departure" 
-                      value={tripForm.departure} 
-                      onChange={handleTripFormChange}
-                      className="w-full p-2 border rounded-md"
-                      required
-                    >
-                      <option value="">Select a Start</option>
-                      {fromDestinations.map(dest => (
-                        <option key={dest.id} value={dest.id}>{dest.name} ({dest.district})</option>
-                      ))}
-                    </select> */}
+
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-medium mb-1">To</label>
@@ -473,7 +544,7 @@ const TransporterSpotManagement = () => {
                   </div> */}
                   
                   <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div>
+                    {/* <div>
                       <label className="block text-sm font-medium mb-1">Total Capacity</label>
                       <input 
                         type="number" 
@@ -484,7 +555,7 @@ const TransporterSpotManagement = () => {
                         className="w-full p-2 border rounded-md"
                         required
                       />
-                    </div>
+                    </div> */}
                     
                     <div>
                       <label className="block text-sm font-medium mb-1">Price (RWF)</label>
@@ -768,4 +839,4 @@ const TransporterSpotManagement = () => {
   );
 };
 
-export default TransporterSpotManagement;
+export default TransporterDestinationSpotManagement;

@@ -1,10 +1,11 @@
 
 'use client';
-import { FaCalendarAlt, FaMapMarkerAlt, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaEdit, FaTrash, FaPlus, FaClosedCaptioning } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { ScheduleType, UserType } from '@/types';
+import { formatDate } from '@/lib/formatdate';
 
 type TravelPlanProps = {
   travelPlans: {
@@ -48,6 +49,8 @@ const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => 
     status: 'Scheduled',
     school: selectedSchool?._id || '',
     expectedArrivalTime: expectedArrivalTime || '',
+    paymentNumber: '',
+
     guardian: {
       name: '',
       email: '',
@@ -198,6 +201,8 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
         school: travelForm.school,
         status: "Scheduled",
         travelNumber: "TRV123456",
+        expectedArrivalTime: expectedArrivalTime || "2025-05-02T00:00:00.000Z",
+        paymentNumber:  travelForm.paymentNumber 
       },
       {
         headers: {
@@ -245,49 +250,40 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
   }
   , [schedules]);
 
+
+  
+
   return (
     <div>
       {/* Existing travel plan rendering code... */}
       
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
         onClick={()=>{}}
         >
           <div
           onClick={()=>{}}
-          className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+          className="bg-white p-6  text-black absolute rounded-lg shadow-lg w-full max-w-[70%] md:max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-xl font-semibold mb-4">Book a Ticket</h3>
+            {/* fixed close button on right corner*/}
+
+            <button 
+              onClick={() => setShowForm(false)}
+              className="fixed top-4 right-4 text-[red] hover:text-red-700"
+            >
+              X
+            </button>
 
             <div className="p-4">
               <h4 className="text-lg font-semibold mb-2">Travel Plan</h4>
               <p className="text-sm text-gray-500 mb-2">
                 {selectedPlan?.province} ({selectedPlan?.destinations.join(', ')})
               </p>
-            </div>
-
-
-            
+            </div>  
             <form onSubmit={handleSubmitTravelForm}>
               {/* Plan Selection */}
               <div className="mb-4">
-                {/* <label className="block text-sm font-medium mb-1">Travel Plan</label> */}
-
-                {/* seleccted paln */}
-
-                {/* <select 
-                  name="plan" 
-                  value={travelForm.plan} 
-                  onChange={handleFormChange}
-                  className="w-full p-2 border rounded-md"
-                  required
-                >
-                  <option value="">Select Travel Plan</option>
-                  {travelPlans.map(dest => (
-                    <option key={dest._id} value={dest._id}>
-                      {dest?.province} ({dest.destinations.join(', ')})
-                    </option>
-                  ))}
-                </select> */}
+              
               </div>
 
               {/* Transporter Selection */}
@@ -426,8 +422,9 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
                   value={travelForm.price} 
                   onChange={handleFormChange}
                   min="0"
-                  className="w-full p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md  "
                   required
+                  disabled
                 />
               </div>
 
@@ -472,6 +469,19 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
                     required
                   />
                 </div>
+
+                {/* paymentNumber */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">Payment Number</label>
+                  <input 
+                    type="text" 
+                    name="paymentNumber" 
+                    value={travelForm.paymentNumber} 
+                    onChange={handleFormChange}
+                    className="w-full p-2 border rounded-md"
+                    required
+                  />
+                  </div>
               </div>
 
               {/* Student Details */}
@@ -511,10 +521,16 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {travelPlans.map(plan => (
-        <div key={plan._id} className={`bg-white rounded-lg shadow-md overflow-hidden ${ new Date(plan.date) > new Date()? 'border-4 border-l-primary' : ' border-4 border-l-red-400'}`}>
+        <div key={plan._id} className={`bg-white rounded-lg shadow-md overflow-hidden ${new Date(plan.date)> new Date()? 'border-4 border-l-primary' : ' border-4 border-l-red-400'}`}>
           <div className="p-4 bg-blue-100">
             <div className="flex justify-between items-start">
-              <h3 className="font-semibold text-lg">Travel Plan</h3>
+              <h3 className="font-semibold text-lg"> {'Travel Plan'} - {formatDate(plan.date)}
+              <p className="font-medium">
+                Status: <span className={ new Date(plan.date)> new Date() ? 'text-green-600' : 'text-red-600'}>
+                  { new Date(plan.date)> new Date() ? 'Upcoming' : 'Past'}
+                </span>
+              </p>
+                </h3>
               {plan.province && (
                 <span className="px-2 py-1 rounded-full text-xs bg-green-200 text-green-800">
                   {plan.province}
@@ -529,7 +545,7 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
                 <FaCalendarAlt className="text-gray-400 mt-1 mr-2" />
                 <div>
                   <p className="text-sm text-gray-500">Date</p>
-                  {/* <p className="font-medium">{formatDate(plan.date)}</p> */}
+                  <p className="font-medium">{new Date(plan.date).toDateString()}</p>
                 </div>
               </div>
               
