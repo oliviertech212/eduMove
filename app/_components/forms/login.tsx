@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { FiEyeOff } from "react-icons/fi";
+import { FiEye } from "react-icons/fi";
 import Link from "next/link";
 import { 
   Form,
@@ -29,6 +31,11 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function Login() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   const FormSchema = z.object({
     email : z.string().email(),
@@ -121,8 +128,24 @@ export default function Login() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+              <FormControl >
+<div className="relative" >
+<Input type={
+                  showPassword ? "text" : "password"
+} placeholder="Password" {...field} />
+                <span
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <FiEyeOff size={20} />
+                  ) : (
+                    <FiEye size={20} />
+                  )}
+                </span>
+
+
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
