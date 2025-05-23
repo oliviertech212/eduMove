@@ -59,6 +59,16 @@ export const Header = () => {
         }
     }, []);
 
+    useEffect(()=>{
+        if ( pathname.includes("plans")){
+            localStorage.setItem("activeTab", "Travel Plans");
+            setActiveTab("Travel Plans")
+
+        }
+    }, [pathname]);
+
+    
+
     return (
         <header className={`
             ${pathname.includes("myaccount") ? "hidden" : ""}

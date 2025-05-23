@@ -3,6 +3,7 @@ import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { useRef } from "react";
 import { Header } from "./landing-page";
 import { IParallax } from "@react-spring/parallax";
+import Link from "next/link";
 
 export const ParallaxScene = () => {
     const ref = useRef<IParallax>(null);
@@ -21,11 +22,11 @@ export const ParallaxScene = () => {
                     justifyContent: 'center',
                 }}
             >
-                <div className="relative w-full h-screen">
+                <div className="relative w-full h-full">
                     <img
                         src="/images/edmoovebusandvolcanoes.png"
                         alt="Hero Background"
-                        className="absolute inset-0 w-full h-full object-fill"
+                        className="absolute inset-0  w-full h-full  object-fill"
                     />
                     <div className="absolute inset-0 bg-black/40" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
@@ -35,12 +36,22 @@ export const ParallaxScene = () => {
                         <p className="text-xl md:text-2xl mb-8 max-w-3xl text-center">
                             Despite improvements in student transport management, the current system remains inefficient, costly, and unsafe due to the lack of a centralized, data-driven approach.
                         </p>
+                        <div className="flex gap-10"> 
                         <button 
                             onClick={() => ref.current?.scrollTo(1)}
-                            className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all"
+                            className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
                         >
                             Learn More
                         </button>
+                        <button 
+                            className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
+                        >
+                           
+                            <Link href="/plans" className="flex items-center gap-3 hover:translate-z-5">
+                            Book a Ticket
+                          </Link>
+                        </button>
+                        </div>
                     </div>
                 </div>
             </ParallaxLayer>
