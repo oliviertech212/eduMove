@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { ScheduleType, UserType } from '@/types';
 import { formatDate } from '@/lib/formatdate';
+import { format } from 'date-fns';
 
 type TravelPlanProps = {
   travelPlans: {
@@ -328,15 +329,50 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
 
                       )
                      .map(schedule => (
+
+                      console.log('schedule', schedule),
+                      
                       <option key={schedule._id} value={schedule._id}>
 
-                        Departure: {schedule?.departureTime} | {schedule?.timeSlots.map((timeSlot: any) => ( timeSlot?.time))}  | Price: {schedule.price} RWF
+                        {schedule?.departure} - {schedule?.destination}: {schedule?.departureTime} | {schedule?.timeSlots.map((timeSlot: any) => ( timeSlot?.time))}  | Price: {schedule.price} RWF
                         {/* Arrival: {new Date(schedule.expectedArrivalTime).toLocaleTimeString()} */}
                       </option>
                     ))}
                   </select>
                 </div>
               )}
+
+              {/* Departure and Destination */}
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">From</label>
+                  <input 
+                    type="text"
+                    name="departure" 
+                    value={travelForm.departure} 
+                    onChange={handleFormChange}
+                    className="w-full p-2 border rounded-md text-primary"
+                    required
+                    disabled
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Destination</label>
+                  <select 
+                    name="destination" 
+                    value={travelForm.destination} 
+                    onChange={handleFormChange}
+                    className="w-full p-2 border rounded-md  text-primary"
+                    required
+                    disabled
+                  >
+                    <option value="">Select Destination</option>
+                    {selectedPlan?.destinations.map((dest: string) => (
+                      <option key={dest} value={dest}>{dest}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
 
                 <div className="mb-4">
                 <label className="block text-sm font-medium mb-1">Departure Time</label>
@@ -354,7 +390,7 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
                   {
                     selectedSchedule?.timeSlots.map((timeSlot: any) => (
                       <option key={timeSlot} value={timeSlot.time}>
-                        {timeSlot?.time} Arrival at {timeSlot?.expectedArivalTime}
+                      Departure at   {timeSlot?.time} Arrival at { format(timeSlot?.expectedArrivalTime,"yyyy-MM-dd HH:MM")  } remain {timeSlot?.slots} seats
                       </option>
                     ))
 
@@ -383,35 +419,7 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
                 </select>
               </div>
 
-              {/* Departure and Destination */}
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Departure</label>
-                  <input 
-                    type="text"
-                    name="departure" 
-                    value={travelForm.departure} 
-                    onChange={handleFormChange}
-                    className="w-full p-2 border rounded-md"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Destination</label>
-                  <select 
-                    name="destination" 
-                    value={travelForm.destination} 
-                    onChange={handleFormChange}
-                    className="w-full p-2 border rounded-md"
-                    required
-                  >
-                    <option value="">Select Destination</option>
-                    {selectedPlan?.destinations.map((dest: string) => (
-                      <option key={dest} value={dest}>{dest}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+              
 
               {/* Price */}
               <div className="mb-4">
