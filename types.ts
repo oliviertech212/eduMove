@@ -87,5 +87,60 @@ export type ScheduleType = {
     updatedAt: string;
     __v: number;
   };
+
+  export type TravelBooking = {
+    travelDetails: {
+      plan: {
+        date: string; // ISO date string
+        id: string;
+      };
+      transporter: {
+        id: string;
+        name: string;
+        contact: string;
+        bussNumber: string;
+      };
+      paymentDetails: {
+        data: {
+          status: string; // e.g., "pending"
+          created_at: string; // ISO date string
+        };
+      };
+      departure: string;
+      destination: string;
+      price: number;
+      departureTime: string;
+      expectedArrivalTime: string; // ISO date string
+    };
+    guardian: {
+      name: string;
+      email: string;
+      phoneNumber: string;
+      address: string;
+    };
+    student: {
+      name: string;
+    };
+    _id: string;
+    school: {
+      _id: string;
+      name: string;
+      email: string;
+      phoneNumber: string;
+      role: string;
+      district: string;
+      sector: string;
+      cell: string;
+      village: string;
+      createdAt: string; // ISO date string
+      updatedAt: string; // ISO date string
+      __v: number;
+    };
+    status: string; // e.g., "Boarded"
+    travelNumber: string;
+    createdAt: string; // ISO date string
+    updatedAt: string; // ISO date string
+    __v: number;
+  };
   
  
