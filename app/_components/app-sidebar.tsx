@@ -53,7 +53,7 @@ const roleBasedMenuItems = {
   ],
   school: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
-    { title: "Student's Arrivals", url: "/myaccount/students-arrivals", icon: FaUsers },
+    // { title: "Student's Arrivals", url: "/myaccount/students-arrivals", icon: FaUsers },
     { title: "Notifications", url: "/myaccount/notifications", icon: FaBell },
   ],
   transporter: [
@@ -61,7 +61,7 @@ const roleBasedMenuItems = {
     // { title: "Fleet Management", url: "/myaccount/fleet", icon: FaBus },
     { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
     { title: "Student's Boarding ", url: "/myaccount/students-boarding", icon: FaUsers },
-    { title: "Student's Arrivals", url: "/myaccount/students-arrivals", icon: FaUsers },
+    // { title: "Student's Arrivals", url: "/myaccount/students-arrivals", icon: FaUsers },
   ],
   authority: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },

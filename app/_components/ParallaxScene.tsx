@@ -1,12 +1,70 @@
 'use client';
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Header } from "./landing-page";
 import { IParallax } from "@react-spring/parallax";
 import Link from "next/link";
+import { toast } from 'sonner';
+import axios from "axios";
+import { TravelBooking } from "@/types";
+
+const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'boarded': return 'text-green-500';
+      case 'denied': return 'text-red-500';
+      case 'pending': return 'text-yellow-500';
+      default: return 'text-gray-500';
+    }
+  };
 
 export const ParallaxScene = () => {
     const ref = useRef<IParallax>(null);
+    const [travelNumberInput, setTravelNumberInput] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [mytravels, setMyTravels] = useState<TravelBooking>();
+
+    const getAllTravelsBookings = async () => {
+        try {
+          setLoading(true);
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_URL}travels/${travelNumberInput}`)
+          console.log("bookings response from api", response.data);
+          setMyTravels(response.data);
+          
+        } catch (error) {
+          console.error('Error fetching bookings:', error);
+          toast.error('Failed to load bookings. Please try again.');
+        } finally {
+          setLoading(false);
+        }
+      };
+
+
+//   const verifyTravelNumber = (travelNumber: string) => {
+//     const booking = bookings.find(b => b.travelNumber === travelNumber);
+    
+//     if (!booking) {
+//       toast.error('Invalid travel number: No matching booking found');
+//       return;
+//     }
+//     // Check if student is already boarded
+//     if (booking.status === 'Boarded') {
+//       toast.warning('Student has already boarded this trip');
+//       return;
+//     }
+    
+//     toast.success('Travel number verified successfully!');
+//   };
+  
+  // Handle manual travel number input
+  const handleManualTravelNumberVerify = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!travelNumberInput.trim()) {
+      toast.error('Please enter a travel number');
+      return;
+    }
+    getAllTravelsBookings();
+    };
 
     return (
         <Parallax pages={4} ref={ref} className="w-full h-screen overflow-hidden">
@@ -52,7 +110,75 @@ export const ParallaxScene = () => {
                           </Link>
                         </button>
                         </div>
+
+
+
+
+                        {/* Travel Number Verification Section */}
+                     
+                        <div className="bg-white p-6 rounded-lg text-primary shadow-md mt-6">
+                            <h2 className="text-xl font-semibold mb-4">Verify Student by Travel Number</h2>  
+                            <div className="flex flex-col md:flex-row md:items-end gap-4 mb-6">
+                              {/* Manual Entry */}
+                              <div className="flex-1">
+                                <form onSubmit={handleManualTravelNumberVerify} className="flex flex-col gap-2">
+                                  <label htmlFor="travel-number-input" className="font-medium">
+                                   Enter Travel Number Manually
+                                  </label>
+                                  <div className="flex">
+                                    <input
+                                      id="travel-number-input"
+                                      type="text"
+                                      value={travelNumberInput}
+                                      onChange={(e) => setTravelNumberInput(e.target.value)}
+                                      placeholder="Enter travel number (e.g., TR-823515-1900)"
+                                      className="flex-1 p-2 border rounded-l-md"
+                                      disabled={loading}
+                                    />
+                                    <button
+                                      type="submit"
+                                      className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-r-md"
+                                      disabled={loading || !travelNumberInput.trim()}
+                                    >
+                                      Verify
+                                    </button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+
+                                    {/* Travel Number Verification Result */}
+        {mytravels && (
+          <div className="p-4 rounded-md bg-green-50 mb-2">
+            <h3 className="font-semibold mb-2">Verification Result:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+              <div>
+                <p><span className="font-medium">Student:</span> {mytravels.student.name}</p>
+                <p><span className="font-medium">School:</span> {mytravels.school.name}</p>
+                <p><span className="font-medium">Guardian:</span> {mytravels.guardian.name}</p>
+              </div>
+              <div>
+                <p><span className="font-medium">Travel Number:</span> {mytravels.travelNumber}</p>
+                <p><span className="font-medium">Route:</span> {mytravels.travelDetails.departure} → {mytravels.travelDetails.destination}</p>
+                <p><span className="font-medium">Departure Time:</span> {mytravels.travelDetails.departureTime}</p>
+              </div>
+            </div>
+            
+            <p className="mb-3">
+              <span className="font-medium">Current Status:</span> 
+              <span className={`ml-2 font-medium ${getStatusColor(mytravels.status)}`}>
+                {mytravels.status}
+              </span>
+            </p>
+            
+          </div>
+        )}
+                        </div>
                     </div>
+
+
+                    
+
                 </div>
             </ParallaxLayer>
 

@@ -18,16 +18,12 @@ import {
   FaUsers
 } from 'react-icons/fa';
 import { toast } from 'sonner';
-import { formatDate } from '@/lib/formatdate';
-
-
 // Available Spots Management Page
 const TransporterDestinationSpotManagement = () => {
   const [activeTab, setActiveTab] = useState<'trips' | 'bookings'>('trips');
   const [travelPlans, setTravelPlans] = useState<TravelPlan[]>([]);
   const [travelSchedule , setTravelSchedule ] = useState<ScheduleType[]>([]);
   const [loadschedule, setLoadSchedule] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [user , setUser] = useState<UserType>();
  
   const [showTripForm, setShowTripForm] = useState(false);
@@ -295,9 +291,8 @@ const TransporterDestinationSpotManagement = () => {
      getallTravelPlans();
     }
   }, []);
-  
-  
-  
+
+
 
   if (loadschedule){
     
@@ -772,7 +767,7 @@ const TransporterDestinationSpotManagement = () => {
             
             {/* Bookings Table */}
             {/* Bookings Table */}
-<div className="bg-white rounded-lg shadow overflow-hidden">
+<div className="bg-white rounded-lg shadow overflow-hidden overflow-x-visible">
   <table className="min-w-full divide-y divide-gray-200">
     <thead className="bg-gray-50">
       <tr>
@@ -866,6 +861,17 @@ const TransporterDestinationSpotManagement = () => {
                 {booking.travelDetails.paymentDetails.data.status}
               </span>
             </td>
+
+             {/* Actions */}
+             {/* <td className="px-6 py-4 whitespace-nowrap">
+              <button
+                onClick={() => confirmBoardingStudent(booking.travelNumber)}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+                disabled={loadingBoarding}
+              >
+                {loadingBoarding ? 'Loading...' : 'Confirm Boarding'}
+              </button>
+            </td> */}
           </tr>
         ))
       )}
