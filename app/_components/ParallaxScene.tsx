@@ -20,8 +20,8 @@ const getStatusColor = (status: string) => {
 export const ParallaxScene = () => {
     const ref = useRef<IParallax>(null);
     const [travelNumberInput, setTravelNumberInput] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [mytravels, setMyTravels] = useState<TravelBooking>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [mytravels, setMyTravels] = useState<TravelBooking>();
 
     const getAllTravelsBookings = async () => {
         try {
@@ -39,23 +39,6 @@ export const ParallaxScene = () => {
         }
       };
 
-
-//   const verifyTravelNumber = (travelNumber: string) => {
-//     const booking = bookings.find(b => b.travelNumber === travelNumber);
-    
-//     if (!booking) {
-//       toast.error('Invalid travel number: No matching booking found');
-//       return;
-//     }
-//     // Check if student is already boarded
-//     if (booking.status === 'Boarded') {
-//       toast.warning('Student has already boarded this trip');
-//       return;
-//     }
-    
-//     toast.success('Travel number verified successfully!');
-//   };
-  
   // Handle manual travel number input
   const handleManualTravelNumberVerify = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,7 +50,7 @@ export const ParallaxScene = () => {
     };
 
     return (
-        <Parallax pages={4} ref={ref} className="w-full h-screen overflow-hidden">
+        <Parallax pages={5} ref={ref} className="w-full h-screen overflow-hidden">
             <Header />
             
             {/* Hero Section */}
@@ -84,116 +67,150 @@ export const ParallaxScene = () => {
                     <img
                         src="/images/edmoovebusandvolcanoes.png"
                         alt="Hero Background"
-                        className="absolute inset-0  w-full h-full  object-fill"
+                        className="absolute inset-0 w-full h-full object-fill"
                     />
                     <div className="absolute inset-0 bg-black/40" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
-                        <h1 className="text-5xl md:text-7xl font-bold mb-6 font-clash text-center">
+                        <h1 className="text-3xl md:text-7xl font-bold mb-6 font-clash text-center">
                             Transforming School Transportation
                         </h1>
                         <p className="text-xl md:text-2xl mb-8 max-w-3xl text-center">
                             Despite improvements in student transport management, the current system remains inefficient, costly, and unsafe due to the lack of a centralized, data-driven approach.
                         </p>
                         <div className="flex gap-10"> 
+                            <button 
+                                onClick={() => ref.current?.scrollTo(1)}
+                                className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
+                            >
+                                Learn More
+                            </button>
+                            <button 
+                                className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
+                            >
+                                <Link href="/plans" className="flex items-center gap-3 hover:translate-z-5">
+                                    Book a Ticket
+                                </Link>
+                            </button>
+                        </div>
+                        
+                        {/* Quick verification link */}
                         <button 
                             onClick={() => ref.current?.scrollTo(1)}
-                            className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
+                            className="mt-8 text-white/90 hover:text-white underline text-lg transition-all"
                         >
-                            Learn More
+                            Verify Travel Number →
                         </button>
-                        <button 
-                            className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
-                        >
-                           
-                            <Link href="/plans" className="flex items-center gap-3 hover:translate-z-5">
-                            Book a Ticket
-                          </Link>
-                        </button>
-                        </div>
+                    </div>
+                </div>
+            </ParallaxLayer>
 
-
-
-
-                        {/* Travel Number Verification Section */}
-                     
-                        <div className="bg-white p-6 rounded-lg text-primary shadow-md mt-6">
-                            <h2 className="text-xl font-semibold mb-4">Verify Student by Travel Number</h2>  
-                            <div className="flex flex-col md:flex-row md:items-end gap-4 mb-6">
-                              {/* Manual Entry */}
-                              <div className="flex-1">
-                                <form onSubmit={handleManualTravelNumberVerify} className="flex flex-col gap-2">
-                                  <label htmlFor="travel-number-input" className="font-medium">
-                                   Enter Travel Number Manually
-                                  </label>
-                                  <div className="flex">
-                                    <input
-                                      id="travel-number-input"
-                                      type="text"
-                                      value={travelNumberInput}
-                                      onChange={(e) => setTravelNumberInput(e.target.value)}
-                                      placeholder="Enter travel number (e.g., TR-823515-1900)"
-                                      className="flex-1 p-2 border rounded-l-md"
-                                      disabled={loading}
-                                    />
-                                    <button
-                                      type="submit"
-                                      className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-r-md"
-                                      disabled={loading || !travelNumberInput.trim()}
-                                    >
-                                      Verify
-                                    </button>
-                                  </div>
-                                </form>
-                              </div>
+            {/* Travel Number Verification Section */}
+            <ParallaxLayer
+                offset={1}
+                speed={0.3}
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <div className="relative w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
+                        <div className="max-w-4xl w-full">
+                            <div className="text-center mb-8">
+                                <h2 className="text-4xl font-bold text-primary mb-4 font-clash">
+                                    Travel Verification Portal
+                                </h2>
+                                <p className="text-xl text-gray-600">
+                                    Quickly verify student travel details using their travel number
+                                </p>
                             </div>
+                            
+                            <div className="bg-white p-8 rounded-2xl shadow-xl">
+                                <h3 className="text-2xl font-semibold mb-6 text-primary">Verify Student by Travel Number</h3>
+                                
+                                <div className="flex flex-col md:flex-row md:items-end gap-4 mb-6">
+                                    <div className="flex-1">
+                                        <form onSubmit={handleManualTravelNumberVerify} className="flex flex-col gap-3">
+                                            <label htmlFor="travel-number-input" className="font-medium text-gray-700">
+                                                Enter Travel Number Manually
+                                            </label>
+                                            <div className="flex">
+                                                <input
+                                                    id="travel-number-input"
+                                                    type="text"
+                                                    value={travelNumberInput}
+                                                    onChange={(e) => setTravelNumberInput(e.target.value)}
+                                                    placeholder="Enter travel number (e.g., TR-823515-1900)"
+                                                    className="flex-1 p-3 border-2 border-gray-200 rounded-l-lg focus:border-primary focus:outline-none text-lg"
+                                                    disabled={loading}
+                                                />
+                                                <button
+                                                    type="submit"
+                                                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-r-lg font-medium transition-colors disabled:opacity-50"
+                                                    disabled={loading || !travelNumberInput.trim()}
+                                                >
+                                                    {loading ? 'Verifying...' : 'Verify'}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
 
-                                    {/* Travel Number Verification Result */}
-        {mytravels && (
-          <div className="p-4 rounded-md bg-green-50 mb-2">
-            <h3 className="font-semibold mb-2">Verification Result:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-              <div>
-                <p><span className="font-medium">Student:</span> {mytravels.student.name}</p>
-                <p><span className="font-medium">School:</span> {mytravels.school.name}</p>
-                <p><span className="font-medium">Guardian:</span> {mytravels.guardian.name}</p>
-              </div>
-              <div>
-                <p><span className="font-medium">Travel Number:</span> {mytravels.travelNumber}</p>
-                <p><span className="font-medium">Route:</span> {mytravels.travelDetails.departure} → {mytravels.travelDetails.destination}</p>
-                <p><span className="font-medium">Departure Time:</span> {mytravels.travelDetails.departureTime}</p>
-              </div>
-            </div>
-            
-            <p className="mb-3">
-              <span className="font-medium">Current Status:</span> 
-              <span className={`ml-2 font-medium ${getStatusColor(mytravels.status)}`}>
-                {mytravels.status}
-              </span>
-            </p>
-            
-          </div>
-        )}
+                                {/* Travel Number Verification Result */}
+                                {mytravels && (
+                                    <div className="p-6 rounded-xl bg-green-50 border border-green-200">
+                                        <h4 className="font-semibold mb-4 text-green-800 text-xl">✓ Verification Result:</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                            <div className="space-y-2">
+                                                <p><span className="font-medium text-gray-700">Student:</span> <span className="text-gray-900">{mytravels.student.name}</span></p>
+                                                <p><span className="font-medium text-gray-700">School:</span> <span className="text-gray-900">{mytravels.school.name}</span></p>
+                                                <p><span className="font-medium text-gray-700">Guardian:</span> <span className="text-gray-900">{mytravels.guardian.name}</span></p>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p><span className="font-medium text-gray-700">Travel Number:</span> <span className="text-gray-900 font-mono">{mytravels.travelNumber}</span></p>
+                                                <p><span className="font-medium text-gray-700">Route:</span> <span className="text-gray-900">{mytravels.travelDetails.departure} → {mytravels.travelDetails.destination}</span></p>
+                                                <p><span className="font-medium text-gray-700">Departure Time:</span> <span className="text-gray-900">{mytravels.travelDetails.departureTime}</span></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="pt-4 border-t border-green-200">
+                                            <p className="text-lg">
+                                                <span className="font-medium text-gray-700">Current Status:</span> 
+                                                <span className={`ml-2 font-bold text-lg ${getStatusColor(mytravels.status)}`}>
+                                                    {mytravels.status.toUpperCase()}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            
+                            <div className="text-center mt-8">
+                                <button 
+                                    onClick={() => ref.current?.scrollTo(2)}
+                                    className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all"
+                                >
+                                    Continue Exploring →
+                                </button>
+                            </div>
                         </div>
                     </div>
-
-
-                    
-
                 </div>
             </ParallaxLayer>
 
             {/* Stakeholders Section */}
             <ParallaxLayer
-                offset={1}
+                offset={2}
                 speed={0.4}
                 style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    zIndex: 1
+                  
                 }}
             >
-                <div className="max-w-5xl mx-auto px-6 py-12">
+                <div className="max-w-5xl mx-auto px-6 py-12 bg-primary bg-opacity-20 rounded-xl">
                     <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-8 text-center">
                         Making Transportation Better For Everyone
                     </h2>
@@ -246,7 +263,7 @@ export const ParallaxScene = () => {
 
             {/* Features Section */}
             <ParallaxLayer
-                offset={2}
+                offset={3}
                 speed={0.2}
                 style={{
                     backgroundColor: '#ffffff',
@@ -294,7 +311,7 @@ export const ParallaxScene = () => {
 
             {/* Network Section */}
             <ParallaxLayer
-                offset={3}
+                offset={4}
                 speed={0.5}
                 style={{
                     display: 'flex',
@@ -338,6 +355,3 @@ export const ParallaxScene = () => {
         </Parallax>
     );
 };
-
-
-
