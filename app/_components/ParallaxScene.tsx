@@ -333,19 +333,19 @@ export const ParallaxScene = () => {
                         </p>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                             <div className="text-center">
-                                <div className="text-4xl font-bold mb-2">100+</div>
+                                {/* <div className="text-4xl font-bold mb-2">100+</div> */}
                                 <div className="text-gray-300">Schools</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-4xl font-bold mb-2">500+</div>
+                                {/* <div className="text-4xl font-bold mb-2">500+</div> */}
                                 <div className="text-gray-300">Routes</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-4xl font-bold mb-2">50+</div>
+                                {/* <div className="text-4xl font-bold mb-2">50+</div> */}
                                 <div className="text-gray-300">Transporters</div>
                             </div>
                             <div className="text-center">
-                                <div className="text-4xl font-bold mb-2">10k+</div>
+                                {/* <div className="text-4xl font-bold mb-2">10k+</div> */}
                                 <div className="text-gray-300">Students</div>
                             </div>
                         </div>

@@ -72,7 +72,7 @@ const roleBasedMenuItems = {
 
     { title: "Dashboard", url: "/myaccount", icon: FaHome },
     // { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
-    { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
+    // { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
     {title:"User Management",url:"/myaccount/user-management",icon:FaUserGraduate},
 
 

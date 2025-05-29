@@ -9,6 +9,7 @@ import TransporterSpotManagement from "./travel-schedule/page";
 import TransporterDestinationSpotManagement from "./spot-destinations/page";
 
 import TravelPlanManagement from "./travel-plans/page";
+import UserManagement from "./user-management/page";
 
 type Role = "student" | "parent" | "school" | "transporter"| "authority" | "admin";
 
@@ -32,7 +33,8 @@ const Home = () => {
       {/* {role === "transporter" && <TransportCoDashboard />} */}
       {role === "transporter" && <TransporterDestinationSpotManagement/>}
       {role === "authority" && <TravelPlanManagement />}
-      {role === "admin" && <TransporterSpotManagement />}
+      {/* {role === "admin" && <TransporterSpotManagement />} */}
+      {role === "admin" && <UserManagement />}
       {!role && <p>Loading dashboard...</p>}
     </div>
   );

@@ -161,10 +161,10 @@ export default function Login() {
           {loading ? "Logging in..." : "Login"}
         </Button>
 
-
+{/* 
         <p className=" w-[100%]   ">Dont have Account? <Link className="hover:text-blue-500 underline"
       href="/register"
-      >Register</Link> </p>
+      >Register</Link> </p> */}
 
 
       </form>
