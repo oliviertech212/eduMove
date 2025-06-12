@@ -7,7 +7,7 @@ import Link from "next/link";
 import { toast } from 'sonner';
 import axios from "axios";
 import { TravelBooking } from "@/types";
-
+import Image from 'next/image';
 const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'boarded': return 'text-green-500';
@@ -63,13 +63,22 @@ export const ParallaxScene = () => {
                     justifyContent: 'center',
                 }}
             >
-                <div className="relative w-full h-full">
-                    <img
-                        src="/images/edmoovebusandvolcanoes.png"
-                        alt="Hero Background"
-                        className="absolute inset-0 w-full h-full object-fill"
-                    />
-                    <div className="absolute inset-0 bg-black/40" />
+
+<div className="relative w-[100%]  h-[100vh]">
+<Image
+        src="/images/edmoovebusandvolcanoes.png"
+        alt="Hero Background"
+        fill
+        className="object-cover object-bottom" 
+        priority
+        sizes="100vw"
+        quality={100}
+        style={{ objectFit: 'cover', objectPosition: 'bottom' }}
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyuzxvzQlU2X1haLJlLBfZnfcYfJ2/ZsOcEPE5sVx6WnvIXKoNgMYnJ2l5HlNzOxTFGSDX9sA1ZkGpCVWGgRD8nWmVLzXw=="
+    />
+  
+                    <div className="absolute inset-0 bg-black/50" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
                         <h1 className="text-3xl md:text-7xl font-bold mb-6 font-clash text-center">
                             Transforming School Transportation
@@ -79,7 +88,7 @@ export const ParallaxScene = () => {
                         </p>
                         <div className="flex gap-10"> 
                             <button 
-                                onClick={() => ref.current?.scrollTo(1)}
+                                onClick={() => ref.current?.scrollTo(2)}
                                 className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
                             >
                                 Learn More
@@ -223,6 +232,8 @@ export const ParallaxScene = () => {
                                     alt="EduMove Stakeholders"
                                     className="w-full h-full object-fill rounded-xl"
                                 />
+
+
                             </div>
                         </div>
                         
@@ -320,12 +331,24 @@ export const ParallaxScene = () => {
                 }}
             >
                 <div className="relative w-full h-screen">
-                    <img
+                    {/* <img
                         src="/images/edumovemanybusonroadshowconnection.png"
                         alt="Network Background"
                         className="absolute inset-0 w-full h-full object-fill"
+                    /> */}
+                    <Image
+                        src="/images/edumovemanybusonroadshowconnection.png"
+                        alt="Network Background"
+                        fill
+                        className="object-cover object-bottom"
+                        priority
+                        sizes="100vw"
+                        quality={100}
+                        style={{ objectFit: 'cover', objectPosition: 'center' }}
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyuzxvzQlU2X1haLJlLBfZnfcYfJ2/ZsOcEPE5sVx6WnvIXKoNgMYnJ2l5HlNzOxTFGSDX9sA1ZkGpCVWGgRD8nWmVLzXw=="
                     />
-                    <div className="absolute inset-0 bg-black/60" />
+                    <div className="absolute inset-0 bg-black/50" />
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
                         <h2 className="text-4xl font-bold mb-8 font-clash">Our Growing Network</h2>
                         <p className="text-xl mb-12 max-w-3xl text-center">

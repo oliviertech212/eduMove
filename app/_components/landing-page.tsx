@@ -84,7 +84,7 @@ export const Header = () => {
                             <motion.li
                                 key={item}
                                 onClick={() => handleItmClick(item)}
-                                whileHover={{ scale: 1.1, color: "#f8f8f8", transition: { duration: 0.3 } }}
+                                whileHover={{ scale: 1.1 , fontWeight:"bolder" , transition: { duration: 0.3 } }}
                                 className={`cursor-pointer transition-all duration-300 ${activeTab === item ? "underline " : ""}`}
                             >
                                 {item}
