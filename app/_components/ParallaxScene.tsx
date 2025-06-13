@@ -66,14 +66,15 @@ export const ParallaxScene = () => {
 
 <div className="relative w-[100%]  h-[100vh]">
 <Image
-        src="/images/edmoovebusandvolcanoes.png"
+        // src="/images/edmoovebusandvolcanoes.png"
+        src="/images/busmauntain.png"
         alt="Hero Background"
         fill
-        className="object-cover object-bottom" 
+        className="object-fill" 
         priority
-        sizes="100vw"
+        // sizes="100vw"
         quality={100}
-        style={{ objectFit: 'cover', objectPosition: 'bottom' }}
+        // style={{ objectFit: 'cover', objectPosition: 'center' }}
         placeholder="blur"
         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyuzxvzQlU2X1haLJlLBfZnfcYfJ2/ZsOcEPE5sVx6WnvIXKoNgMYnJ2l5HlNzOxTFGSDX9sA1ZkGpCVWGgRD8nWmVLzXw=="
     />
