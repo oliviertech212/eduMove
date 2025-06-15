@@ -15,7 +15,8 @@ import {
   FaClock, 
   FaMapMarkerAlt, 
   FaBus, 
-  FaUsers
+  FaUsers,
+  FaSearch
 } from 'react-icons/fa';
 import { toast } from 'sonner';
 // Available Spots Management Page
@@ -46,6 +47,98 @@ const TransporterDestinationSpotManagement = () => {
       status: '',
     });
  
+
+
+    const [statusFilter, setStatusFilter] = useState<string | 'All'>('All');
+    const [dateFilter, setDateFilter] = useState<string>('');
+    const [destinationFilter, setDestinationFilter] = useState<string>('');
+    const [timeSlotFilter, setTimeSlotFilter] = useState<string>('');
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
+
+
+      // Available destinations and time slots for dropdowns
+  const [availableDestinations, setAvailableDestinations] = useState<string[]>([]);
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
+  
+  // Build query parameters for API
+  const buildQueryParams = () => {
+    const params = new URLSearchParams();
+    
+    if (searchQuery) params.append('search', searchQuery);
+    if (statusFilter && statusFilter !== 'All') params.append('status', statusFilter);
+    if (dateFilter) params.append('date', dateFilter);
+    if (destinationFilter) params.append('destination', destinationFilter);
+    if (timeSlotFilter) params.append('timeSlot', timeSlotFilter);
+    
+    return params.toString();
+  };
+  
+  // Get all transporter bookings with filters
+  const getAllTransporterBookings = async () => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    const savedUser = user ? JSON.parse(user) : null;
+    
+    if (!savedUser?._id) {
+      toast.error('User not found. Please log in again.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const queryParams = buildQueryParams();
+      const url = `${process.env.NEXT_PUBLIC_API_URL}travels${queryParams ? `?${queryParams}` : ''}`;
+      
+      const response = await axios.get(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log("bookings response from api", response.data.data);
+      
+      // Handle the response structure based on your API
+      const bookingsData = response.data.data || response.data || [];
+      setBookings(bookingsData);
+      
+      // Extract unique destinations and time slots for filter dropdowns
+      const destinations = [...new Set(bookingsData.map((booking:any) => booking.travelDetails.destination))];
+      const timeSlots = [...new Set(bookingsData.map((booking:any) => booking.travelDetails.departureTime))];
+      
+      setAvailableDestinations(destinations as string[]);
+      setAvailableTimeSlots(timeSlots as string[]);
+      
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      toast.error('Failed to load bookings. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch bookings on component mount
+  useEffect(() => {
+    getAllTransporterBookings();
+  }, []);
+  
+  // Refetch data when filters change (debounced)
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      getAllTransporterBookings();
+    }, 500); // 500ms debounce
+    
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, statusFilter, dateFilter, destinationFilter, timeSlotFilter]);
+  
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSearchQuery('');
+    setStatusFilter('All');
+    setDateFilter('');
+    setDestinationFilter('');
+    setTimeSlotFilter('');
+  };
 
 
    // Submit form to add/edit trip
@@ -229,31 +322,86 @@ const TransporterDestinationSpotManagement = () => {
       });
     };
 
-  const getallTravelSchedule = async () => {
-    const user = localStorage.getItem("user");
-    const savedUser = user ? JSON.parse(user) : null;
-    try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}transporters/${savedUser?._id}/schedules`); 
-      console.log("trvel plan",response.data.data.schedules);
+    const getallTravelSchedule = async () => {
+      const user = localStorage.getItem("user");
+      const savedUser = user ? JSON.parse(user) : null;
+      
+      // Always set loading to false regardless of success/failure
       setLoadSchedule(false);
-      setTravelSchedule (response.data.data.schedules);
-    } catch (error) {
-      setLoadSchedule(false);
-      console.error('Error fetching travel plans:', error);
-      toast.error('Failed to load travel plans. Please try again.');
-    }
-  }
+      
+      if (!savedUser?._id) {
+        console.warn('No user ID found');
+        toast.error('Please log in again');
+        return;
+      }
+      
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}transporters/${savedUser._id}/schedules`);
+        
+        if (response?.data?.data?.schedules) {
+          setTravelSchedule(response.data.data.schedules);
+        } else if (response?.data) {
+          // Handle different response structures
+          setTravelSchedule(Array.isArray(response.data) ? response.data : []);
+        } else {
+          console.warn('No schedule data received');
+          setTravelSchedule([]);
+        }
+      } catch (error) {
+        // Graceful error handling - don't crash the app
+        console.error('Error fetching travel schedules:', error);
+        
+        if (axios.isAxiosError(error)) {
+          const status = error.response?.status;
+          
+          switch (status) {
+            case 404:
+              console.warn('Travel schedules endpoint not found');
+              toast.error('Travel schedules feature is not available yet');
+              break;
+            case 401:
+              toast.error('Please log in again');
+              break;
+            case 403:
+              toast.error('You do not have permission to view schedules');
+              break;
+            case 500:
+              toast.error('Server error. Please try again later');
+              break;
+            default:
+              toast.error('Failed to load travel schedules');
+          }
+        } else {
+          toast.error('Network error. Please check your connection');
+        }
+        
+        // Set empty array so the app continues to work
+        setTravelSchedule([]);
+      }
+    };
+
+
+
+
+
 
   const getallTravelPlans = async () => {
-
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}plans`); 
-      setTravelPlans(response.data);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}plans`);
+      setTravelPlans(response?.data || []);
     } catch (error) {
       console.error('Error fetching travel plans:', error);
-      toast.error('Failed to load travel plans. Please try again.');
+      
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        toast.error('Travel plans feature is not available yet');
+      } else {
+        toast.error('Failed to load travel plans');
+      }
+      
+      // Don't crash - set empty array
+      setTravelPlans([]);
     }
-  }
+  };
 
 
   const getallTransporterbookings = async () => {
@@ -262,34 +410,71 @@ const TransporterDestinationSpotManagement = () => {
     const user = localStorage.getItem("user");
     const savedUser = user ? JSON.parse(user) : null;
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}transporters/${savedUser?._id}/travels`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}travels`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
 
-      console.log("bookings response form api",response.data);
+      console.log("bookings response form api on main",response.data.data);
       
-      setBookings(response.data);
+      setBookings(response.data?.data);
     } catch (error) {
       console.error('Error fetching bookings:', error);
       toast.error('Failed to load bookings. Please try again.');
     }
   }
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = localStorage.getItem("user");
-      const savedUser = user ? JSON.parse(user) : null;
-      console.log("user",savedUser );
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const user = localStorage.getItem("user");
+  //     const savedUser = user ? JSON.parse(user) : null;
+  //     console.log("user",savedUser );
       
-      setUser(savedUser);
+  //     setUser(savedUser);
 
       
-     getallTravelSchedule(); 
-      getallTransporterbookings();
-     getallTravelPlans();
-    }
+  //    getallTravelSchedule(); 
+  //     getallTransporterbookings();
+  //    getallTravelPlans();
+  //   }
+  // }, []);
+
+
+
+
+  useEffect(() => {
+    const initializeData = async () => {
+      if (typeof window !== "undefined") {
+        const user = localStorage.getItem("user");
+        const savedUser = user ? JSON.parse(user) : null;
+        
+        if (savedUser) {
+          setUser(savedUser);
+          
+          // Call all functions but don't let any single failure crash the app
+          try {
+            await Promise.allSettled([
+              getallTravelSchedule(),
+              getallTransporterbookings(),
+              getallTravelPlans()
+            ]);
+          } catch (error) {
+            console.error('Error initializing data:', error);
+            // App continues to work even if some data fails to load
+          }
+        } else {
+          // No user data - set loading to false and show empty states
+          setLoadSchedule(false);
+          setTravelSchedule([]);
+          setBookings([]);
+          setTravelPlans([]);
+          toast.error('Please log in to view your data');
+        }
+      }
+    };
+    
+    initializeData();
   }, []);
 
 
@@ -695,79 +880,124 @@ const TransporterDestinationSpotManagement = () => {
             
             {/* Filters */}
             <div className="bg-white p-4 rounded-lg shadow mb-4">
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center">
-                  <FaFilter className="text-gray-400 mr-2" />
-                  <span className="font-medium">Filters:</span>
-                </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-grow mb-4 items-center">
-        <div>
-          <label className="block text-sm font-medium mb-1">District/City</label>
-          <input
-            type="text"
-            name="district"
-            value={bookingFilters.district}
-            onChange={handleFilterChange}
-            placeholder="Filter by district"
-            className="w-full p-2 border rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Departure Date</label>
-          <input
-            type="date"
-            name="date"
-            value={bookingFilters.date}
-            onChange={handleFilterChange}
-            className="w-full p-2 border rounded-md"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Status</label>
-          <select
-            name="status"
-            value={bookingFilters.status}
-            onChange={handleFilterChange}
-            className="w-full p-2 border rounded-md"
-          >
-            <option value="">All Statuses</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Pending">Pending</option>
-            <option value="Cancelled">Cancelled</option>
-            <option value="Boarded">Boarded</option>
-            <option value="Scheduled">Scheduled</option>
-          </select>
-        </div>
-
-        {/* check if bookingFilters is not empty shwo clear button */}
-
-        {
-          (bookingFilters.district || bookingFilters.date || bookingFilters.status) && (
-            <div className="flex items-center">
-              <button
-                onClick={clearFilters}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-              >
-                Clear Filters
-              </button>
+                     {/* Enhanced Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4">
+          {/* Search Filter */}
+          <div className="lg:col-span-2">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search by student name, travel number, or school"
+                className="w-full p-2 pl-10 border rounded-md"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <FaSearch className="absolute left-3 top-3 text-gray-400" />
             </div>
-          )
+          </div>
           
-        }
-
-        
-
-        
-      </div>
-              </div>
+          {/* Status Filter */}
+          <div>
+            <div className="relative">
+              <select
+                className="w-full p-2 pl-10 border rounded-md appearance-none"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="All">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Boarded">Boarded</option>
+                <option value="Denied">Denied</option>
+              </select>
+              <FaFilter className="absolute left-3 top-3 text-gray-400" />
             </div>
-            
+          </div>
+          
+          {/* Date Filter */}
+          <div>
+            <div className="relative">
+              <input
+                type="date"
+                className="w-full p-2 pl-10 border rounded-md"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+              />
+              <FaCalendarAlt className="absolute left-3 top-3 text-gray-400" />
+            </div>
+          </div>
+          
+          {/* Destination Filter */}
+          <div>
+            <div className="relative">
+              <select
+                className="w-full p-2 pl-10 border rounded-md appearance-none"
+                value={destinationFilter}
+                onChange={(e) => setDestinationFilter(e.target.value)}
+              >
+                <option value="">All Destinations</option>
+                {availableDestinations.map(destination => (
+                  <option key={destination} value={destination}>{destination}</option>
+                ))}
+              </select>
+              <FaMapMarkerAlt className="absolute left-3 top-3 text-gray-400" />
+            </div>
+          </div>
+        </div>
+        
+        {/* Second row of filters */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          {/* Time Slot Filter */}
+          <div>
+            <div className="relative">
+              <select
+                className="w-full p-2 pl-10 border rounded-md appearance-none"
+                value={timeSlotFilter}
+                onChange={(e) => setTimeSlotFilter(e.target.value)}
+              >
+                <option value="">All Time Slots</option>
+                {availableTimeSlots.map(timeSlot => (
+                  <option key={timeSlot} value={timeSlot}>{timeSlot}</option>
+                ))}
+              </select>
+              <FaClock className="absolute left-3 top-3 text-gray-400" />
+            </div>
+          </div>
+          
+          {/* Clear Filters Button */}
+          <div>
+            <button
+              onClick={clearAllFilters}
+              className="w-full p-2 bg-primary  text-white  rounded-md transition-colors"
+            >
+              Clear All Filters
+            </button>
+          </div>
+          
+          {/* Active Filters Indicator */}
+          <div className="md:col-span-2 flex items-center text-sm text-gray-600">
+            {(searchQuery || statusFilter !== 'All' || dateFilter || destinationFilter || timeSlotFilter) && (
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md">
+                {[
+                  searchQuery && 'Search',
+                  statusFilter !== 'All' && 'Status',
+                  dateFilter && 'Date',
+                  destinationFilter && 'Destination',
+                  timeSlotFilter && 'Time'
+                ].filter(Boolean).join(', ')} filter(s) active
+              </span>
+            )}
+          </div>
+        </div>
+            </div>    
             {/* Bookings Table */}
-            {/* Bookings Table */}
-<div className="bg-white rounded-lg shadow overflow-hidden overflow-x-visible">
+
+            {
+              loading?(
+                <div className="flex justify-center items-center h-full">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                </div>
+              ):(
+                <div className="bg-white rounded-lg shadow overflow-hidden overflow-x-visible">
   <table className="min-w-full divide-y divide-gray-200">
     <thead className="bg-gray-50">
       <tr>
@@ -878,6 +1108,10 @@ const TransporterDestinationSpotManagement = () => {
     </tbody>
   </table>
 </div>
+              )
+            }
+           
+
 
           </div>
         </div>
