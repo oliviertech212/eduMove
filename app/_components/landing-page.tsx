@@ -41,7 +41,14 @@ export const Header = () => {
             router.push("/signin");
         } else if (item === "Travel Plans"){
             router.push("/plans");
-        } else {
+        } else if (item === "Contact") {
+            router.push("/contact");
+        }else if (item === "About") {
+            router.push("/aboutus");
+        }
+        
+        
+        else {
             router.push("/");
         }
     }
@@ -75,7 +82,9 @@ export const Header = () => {
             fixed top-0 left-0 right-0 mx-auto w-full z-50 transition-all duration-300 px-4 py-5 
             ${isFixed ? "bg-black shadow-md" : "bg-[white]"}`}>
             <div className="flex flex-row items-center justify-between text-primary font-extrabold">
-                <div className="text-4xl font-clash">eduMove</div>
+                <div className="text-4xl font-clash cursor-pointer"
+                    onClick={() => handleItmClick("Home")}
+                >eduMove</div>
                 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:block">
