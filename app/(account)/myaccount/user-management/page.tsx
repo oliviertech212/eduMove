@@ -1,4 +1,3 @@
-
 'use client';
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaFilter } from 'react-icons/fa';
@@ -15,6 +14,24 @@ import {
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { UserType } from '@/types';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Add this container animation variant
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+// Add this item animation variant
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
 
 const UserManagement = () => {
   const [users, setUsers] = useState<UserType[]>([]);
@@ -247,30 +264,103 @@ const UserManagement = () => {
 
       {/* User List */}
       {isLoading ? (
-        <div>Loading users...</div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex items-center justify-center h-40"
+        >
+          <div className="text-lg text-gray-600">Loading users...</div>
+        </motion.div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredUsers.map(user => (
-            <div 
-              key={user._id} 
-              className="border p-4 shadow-lg rounded-lg "
-            >
-              <h3 className="font-bold">{user.name}</h3>
-              <p>Email: {user.email}</p>
-              <p>Phone: {user.phoneNumber}</p>
-              <p>Role: {user.role}</p>
-              {user.role === 'school' && (
-                <div>
-                  <p>District: {user.district}</p>
-                  <p>Sector: {user.sector}</p>
-                </div>
-              )}
-              {user.role === 'transporter' && (
-                <p>Areas: {user.areaOfOperations?.join(', ')}</p>
-              )}
-            </div>
-          ))}
-        </div>
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid gap-4 cursor-pointer md:grid-cols-2 lg:grid-cols-3"
+        >
+          <AnimatePresence>
+            {filteredUsers.map((user, index) => (
+              <motion.div 
+                key={user._id}
+                variants={item}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, scale: 0.8 }}
+                whileHover={{ 
+                  scale: 1.02,
+                  boxShadow: "0 10px 30px -10px rgba(0,0,0,0.2)",
+                  transition: { duration: 0.2 }
+                }}
+                className="border p-4 shadow-lg rounded-lg bg-white hover:border-primary/50 transition-colors"
+              >
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <motion.h3 
+                    className="font-bold text-lg text-primary"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    {user.name}
+                  </motion.h3>
+                  <motion.div 
+                    className="space-y-2 mt-3"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.1 + 0.2 }}
+                  >
+                    <p className="flex items-center gap-2">
+                      <span className="text-gray-600">Email:</span>
+                      <span className="text-gray-900">{user.email}</span>
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <span className="text-gray-600">Phone:</span>
+                      <span className="text-gray-900">{user.phoneNumber}</span>
+                    </p>
+                    <motion.p 
+                      className="flex items-center gap-2"
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <span className="text-gray-600">Role:</span>
+                      <span className="text-gray-900 capitalize">{user.role}</span>
+                    </motion.p>
+                    {user.role === 'school' && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 + 0.3 }}
+                        className="mt-2 pt-2 border-t border-gray-100"
+                      >
+                        <p className="flex items-center gap-2">
+                          <span className="text-gray-600">District:</span>
+                          <span className="text-gray-900">{user.district}</span>
+                        </p>
+                        <p className="flex items-center gap-2">
+                          <span className="text-gray-600">Sector:</span>
+                          <span className="text-gray-900">{user.sector}</span>
+                        </p>
+                      </motion.div>
+                    )}
+                    {user.role === 'transporter' && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 + 0.3 }}
+                        className="mt-2 pt-2 border-t border-gray-100"
+                      >
+                        <p className="flex items-center gap-2">
+                          <span className="text-gray-600">Areas:</span>
+                          <span className="text-gray-900">{user.areaOfOperations?.join(', ')}</span>
+                        </p>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );

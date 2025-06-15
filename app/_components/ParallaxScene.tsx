@@ -9,6 +9,7 @@ import axios from "axios";
 import { TravelBooking } from "@/types";
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRouter } from "next/navigation";
 
 const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -24,6 +25,9 @@ export const ParallaxScene = () => {
     const [travelNumberInput, setTravelNumberInput] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [mytravels, setMyTravels] = useState<TravelBooking>();
+
+    const router = useRouter();
+
 
     const getAllTravelsBookings = async () => {
         try {
@@ -122,6 +126,7 @@ export const ParallaxScene = () => {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 className="bg-primary hover:bg-primary/90 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all"
+                                onClick={() => router.push('/plans')}
                             >
                                 <Link href="/plans" className="flex items-center gap-3 hover:translate-z-5">
                                     Book a Ticket
@@ -509,6 +514,7 @@ export const ParallaxScene = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="bg-primary text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-primary/90 transition-colors"
+                            onClick={() => router.push('/plans')}
                         >
                             Get Started Today
                         </motion.button>
@@ -683,7 +689,7 @@ export const ParallaxScene = () => {
                                     whileHover={{ scale: 1.1 }}
                                     className="text-center"
                                 >
-                                    <div className="text-gray-300">{item}</div>
+                                    <div className="text-gray-300 font-bold text-2xl">{item}</div>
                                 </motion.div>
                             ))}
                         </motion.div>

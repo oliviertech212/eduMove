@@ -230,7 +230,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <span
-          className="w-full bg-white bg-opacity-10 border border-white border-opacity-20 rounded-md py-2 pl-3 pr-8 fixed bottom-0 text-white appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-opacity-20 transition-all"
+          className="w-full bg-white cursor-pointer bg-opacity-10 border border-white border-opacity-20 rounded-md py-2 pl-3 pr-8 fixed bottom-0 text-white appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-opacity-20 transition-all"
           onClick={handleLogout}
         >
           Logout
