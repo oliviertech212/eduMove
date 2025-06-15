@@ -135,6 +135,7 @@ const UserManagement = () => {
             <Button 
               key={role}
               variant={selectedRole === role ? 'default' : 'outline'}
+              className={`${selectedRole === role ? 'bg-primary text-white' : 'bg-white text-primary'}`}
               onClick={() => handleRoleFilter(role)}
             >
               {role.charAt(0).toUpperCase() + role.slice(1)}
