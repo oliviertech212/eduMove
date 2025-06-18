@@ -30,6 +30,7 @@ const TransporterDestinationSpotManagement = () => {
     destination: '',
     timeSlots: tripSlots
   });
+  const [availableSchedules, setAvailableSchedules] = useState<Array<{ _id: string; departure: string; destination: string; departureTime?: string }>>([]);
   const [bookings, setBookings] = useState<TravelBooking[]>([]);
   const [statusFilter, setStatusFilter] = useState<string | 'All'>('All');
   const [dateFilter, setDateFilter] = useState<string>('');
@@ -40,6 +41,8 @@ const TransporterDestinationSpotManagement = () => {
   const [availableDestinations, setAvailableDestinations] = useState<string[]>([]);
   const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
   const [loadarrival, setLoadarrival] = useState<{ [key: string]: boolean }>({});
+  const [loadingSchedules, setLoadingSchedules] = useState<boolean>(false);
+  const [scheduleIdFilter, setScheduleIdFilter] = useState<string>('');
 
   // Build query parameters for API
   const buildQueryParams = () => {
@@ -98,6 +101,7 @@ const TransporterDestinationSpotManagement = () => {
     setDateFilter('');
     setDestinationFilter('');
     setTimeSlotFilter('');
+    setScheduleIdFilter('');
   };
 
   console.log("travelplaan",travelPlans,"selected plan", selectedPlan );
@@ -267,8 +271,28 @@ const TransporterDestinationSpotManagement = () => {
       
       if (response?.data?.data?.schedules) {
         setTravelSchedule(response.data.data.schedules);
+
+                // Format schedules for the filter dropdown
+                const formattedSchedules = response.data.data.schedules.map((schedule: ScheduleType) => ({
+                  _id: schedule._id,
+                  departure: schedule.departure,
+                  destination: schedule.destination,
+                  departureTime: schedule.departureTime
+                }));
+                setAvailableSchedules(formattedSchedules);
       } else if (response?.data) {
         setTravelSchedule(Array.isArray(response.data) ? response.data : []);
+
+        const schedules = response.data.data.schedules;
+        setTravelSchedule(schedules);
+            
+        const formattedSchedules = schedules.map((schedule: ScheduleType) => ({
+          _id: schedule._id,
+          departure: schedule.departure,
+          destination: schedule.destination,
+          departureTime: schedule.departureTime
+        }));
+        setAvailableSchedules(formattedSchedules);
       } else {
         console.warn('No schedule data received');
         setTravelSchedule([]);
@@ -351,7 +375,7 @@ const TransporterDestinationSpotManagement = () => {
     }, 500);
     
     return () => clearTimeout(timeoutId);
-  }, [searchQuery, statusFilter, dateFilter, destinationFilter, timeSlotFilter]);
+  }, [searchQuery, statusFilter, dateFilter, destinationFilter, timeSlotFilter, scheduleIdFilter]);
 
   if (loadschedule) {
     return (
@@ -391,6 +415,8 @@ const TransporterDestinationSpotManagement = () => {
               <FaPlus /> Add Trip
             </button>
           </div>
+
+           
           
           <TripForm
             showTripForm={showTripForm}
@@ -405,6 +431,7 @@ const TransporterDestinationSpotManagement = () => {
             addTimeSlot={addTimeSlot}
             removeTimeSlot={removeTimeSlot}
             handleSubmitTripForm={handleSubmitTripForm}
+           
           />
           
           <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -538,7 +565,14 @@ const TransporterDestinationSpotManagement = () => {
               availableDestinations={availableDestinations}
               availableTimeSlots={availableTimeSlots}
               clearAllFilters={clearAllFilters}
+              scheduleIdFilter={scheduleIdFilter}
+              setScheduleIdFilter={setScheduleIdFilter}
+              showScheduleFilter={true}
+              availableSchedules={availableSchedules}
+              loadingSchedules={loadingSchedules}
             />
+
+
             
             <BookingTable
               bookings={bookings}

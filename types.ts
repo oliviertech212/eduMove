@@ -104,6 +104,10 @@ export type ScheduleType = {
         data: {
           status: string; // e.g., "pending"
           created_at: string; // ISO date string
+          amount : number;
+          provider:string;
+          client:string; 
+
         };
       };
       departure: string;

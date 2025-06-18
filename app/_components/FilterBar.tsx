@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaSearch, FaFilter, FaCalendarAlt, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaRoute } from 'react-icons/fa';
 
 interface FilterBarProps {
   searchQuery: string;
@@ -12,9 +12,14 @@ interface FilterBarProps {
   setDestinationFilter: (destination: string) => void;
   timeSlotFilter: string;
   setTimeSlotFilter: (timeSlot: string) => void;
+  scheduleIdFilter: string;
+  setScheduleIdFilter: (scheduleId: string) => void;
   availableDestinations: string[];
   availableTimeSlots: string[];
+  availableSchedules: Array<{ _id: string; departure: string; destination: string; departureTime?: string }>;
   clearAllFilters: () => void;
+  showScheduleFilter?: boolean;
+  loadingSchedules?: boolean;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -28,14 +33,19 @@ const FilterBar: React.FC<FilterBarProps> = ({
   setDestinationFilter,
   timeSlotFilter,
   setTimeSlotFilter,
+  scheduleIdFilter,
+  setScheduleIdFilter,
   availableDestinations,
   availableTimeSlots,
+  availableSchedules,
   clearAllFilters,
+  showScheduleFilter = false,
+  loadingSchedules = false,
 }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow mb-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-6 gap-4 mb-4">
+        {/* <div className="lg:col-span-2">
           <div className="relative">
             <input
               type="text"
@@ -46,7 +56,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             />
             <FaSearch className="absolute left-3 top-3 text-gray-400" />
           </div>
-        </div>
+        </div> */}
         
         <div>
           <div className="relative">
@@ -59,6 +69,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               <option value="Pending">Pending</option>
               <option value="Boarded">Boarded</option>
               <option value="Denied">Denied</option>
+              <option value="Arrived At Destination">Arrived</option>
             </select>
             <FaFilter className="absolute left-3 top-3 text-gray-400" />
           </div>
@@ -91,9 +102,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             <FaMapMarkerAlt className="absolute left-3 top-3 text-gray-400" />
           </div>
         </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+
         <div>
           <div className="relative">
             <select
@@ -109,6 +118,34 @@ const FilterBar: React.FC<FilterBarProps> = ({
             <FaClock className="absolute left-3 top-3 text-gray-400" />
           </div>
         </div>
+
+        {showScheduleFilter && (
+          <div>
+            <div className="relative">
+              <select
+                className="w-full p-2 pl-10 border rounded-md appearance-none"
+                value={scheduleIdFilter}
+                onChange={(e) => setScheduleIdFilter(e.target.value)}
+                disabled={loadingSchedules}
+              >
+                <option value="">
+                  {loadingSchedules ? 'Loading schedules...' : 'All Schedules'}
+                </option>
+                {!loadingSchedules && availableSchedules.map(schedule => (
+                  <option key={schedule._id} value={schedule._id}>
+                    {schedule.departure} → {schedule.destination} {schedule.departureTime ? `(${schedule.departureTime})` : ''}
+                  </option>
+                ))}
+              </select>
+              <FaRoute className="absolute left-3 top-3 text-gray-400" />
+              {loadingSchedules && (
+                <div className="absolute right-3 top-3">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
         
         <div>
           <button
@@ -119,15 +156,20 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </button>
         </div>
         
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+
         <div className="md:col-span-2 flex items-center text-sm text-gray-600">
-          {(searchQuery || statusFilter !== 'All' || dateFilter || destinationFilter || timeSlotFilter) && (
+          {(searchQuery || statusFilter !== 'All' || dateFilter || destinationFilter || timeSlotFilter || scheduleIdFilter) && (
             <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-md">
               {[
                 searchQuery && 'Search',
                 statusFilter !== 'All' && 'Status',
                 dateFilter && 'Date',
                 destinationFilter && 'Destination',
-                timeSlotFilter && 'Time'
+                timeSlotFilter && 'Time',
+                scheduleIdFilter && 'Schedule'
               ].filter(Boolean).join(', ')} filter(s) active
             </span>
           )}
