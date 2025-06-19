@@ -298,6 +298,7 @@ const roleBasedMenuItems = {
     // { title: "Student's Arrivals", url: "/myaccount/students-arrivals", icon: FaUsers },
     // { title: "Notifications", url: "/myaccount/notifications", icon: FaBell },
     { title: "Travel Schedules", url: "/myaccount/schooltravels", icon: FaMapMarkerAlt },
+    {title: "Student Arrival" , url:"/myaccount/school-arrival" , icon: FaUsers}
   ],
   transporter: [
     { title: "Dashboard", url: "/myaccount", icon: FaHome },

@@ -183,7 +183,7 @@ const StudentBoardingVerification = () => {
   };
   
   // Confirm boarding student - Updated function
-  const confirmBoardingStudent = async (travelNumber: string) => {
+  const confirmStudentArrival = async (travelNumber: string) => {
     const token = localStorage.getItem("token");
     
     if (!token) {
@@ -193,10 +193,9 @@ const StudentBoardingVerification = () => {
 
     try {
       setLoadingBoarding(true);
-      
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}travels/${travelNumber}/boarding`,
-        {}, // Empty body if no additional data needed
+        `${process.env.NEXT_PUBLIC_API_URL}travels/${travelNumber}/arrived-at-school`,
+        {}, 
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -205,7 +204,6 @@ const StudentBoardingVerification = () => {
         }
       );
 
-      console.log("Boarding confirmation response:", response.data);
       
       // Refresh the data to get updated status from server
       await getAllTransporterBookings();
@@ -214,7 +212,7 @@ const StudentBoardingVerification = () => {
       setSelectedBooking(null);
       setTravelNumberInput('');
       
-      toast.success('Student boarding confirmed successfully!');
+      toast.success('Student Arrival confirmed successfully!');
       
     } catch (error: any) {
       console.error('Error confirming boarding:', error);
@@ -290,15 +288,16 @@ const StudentBoardingVerification = () => {
   
   return (
     <div className="p-6 max-w-10xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Student Boarding Verification</h1>
+      <h1 className="text-2xl font-bold mb-6">Student Arrival Verification</h1>
       
-   <div className='grid  grid-cols-1 md:grid-cols-2 gap-4'>
 
-       {/* Summary Card */}
-       <div className="bg-blue-50 p-4 rounded-md mb-6 flex items-center">
+      <div className='grid  grid-cols-1 md:grid-cols-2 gap-4'>
+
+             {/* Summary Card */}
+      <div className="bg-blue-50 p-4 rounded-md mb-6 flex items-center">
         <FaBus className="text-blue-600 text-xl mr-3" />
         <div>
-          <h2 className="font-bold">Transport Management</h2>
+          <h2 className="font-bold">School Transport Management</h2>
           <p>Total Bookings: {bookings.length} | Today's Date: {new Date().toLocaleDateString()}</p>
         </div>
       </div>
@@ -363,42 +362,31 @@ const StudentBoardingVerification = () => {
             </p>
             
             <div className="flex gap-2 mt-2">
-              <button
-                onClick={() => confirmBoardingStudent(selectedBooking.travelNumber)}
-                className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded disabled:opacity-50 flex items-center gap-2"
-                disabled={selectedBooking.status === 'Boarded' || loadingBoarding}
-              >
-                {loadingBoarding ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    Confirming...
-                  </>
-                ) : (
-                  'Confirm Boarding'
-                )}
-              </button>
 
- 
-
-
+                {
+                     (selectedBooking.status !== 'Arrived At School' && selectedBooking.status !== 'Pending') && <button
+                    onClick={() => confirmStudentArrival(selectedBooking.travelNumber)}
+                    className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded disabled:opacity-50 flex items-center gap-2"
+                    disabled={selectedBooking.status === 'Boarded' || loadingBoarding}
+                  >
+                    {loadingBoarding ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Confirming...
+                      </>
+                    ) : (
+                      'Confirm Arrival'
+                    )}
+                  </button>
+                }
               
 
-
-
-
-              <button
-                onClick={() => denyBoarding(selectedBooking.travelNumber)}
-                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded disabled:opacity-50"
-                disabled={selectedBooking.status === 'Denied' || loadingBoarding}
-              >
-                Deny Boarding
-              </button>
             </div>
           </div>
         )}
       </div>
+      </div>
 
-   </div>
       
       {/* Student Booking Status List */}
       <div className="bg-white p-6 rounded-lg shadow-md">
@@ -565,22 +553,16 @@ const StudentBoardingVerification = () => {
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        {booking.status === 'Pending' || booking.status === 'pending' ? (
+                        {(booking.status !== 'Arrived At School' && booking.status !== 'Pending')? (
                           <div className="flex space-x-2">
                             <button
-                              onClick={() => confirmBoardingStudent(booking.travelNumber)}
-                              className="bg-green-100 hover:bg-green-200 text-green-800 py-1 px-3 rounded-md text-sm disabled:opacity-50"
+                              onClick={() => confirmStudentArrival(booking.travelNumber)}
+                              className="bg-green-500 hover:bg-green text-white py-1 px-3 rounded-md text-sm disabled:opacity-50"
                               disabled={loadingBoarding}
                             >
-                              Board
+                              Confirm Arrival
                             </button>
-                            <button
-                              onClick={() => denyBoarding(booking.travelNumber)}
-                              className="bg-red-100 hover:bg-red-200 text-red-800 py-1 px-3 rounded-md text-sm"
-                              disabled={loadingBoarding}
-                            >
-                              Deny
-                            </button>
+                           
                           </div>
                         ) : (
                           <div className="flex space-x-2">
@@ -592,7 +574,7 @@ const StudentBoardingVerification = () => {
                               }}
                               className="bg-blue-100 hover:bg-blue-200 text-blue-800 py-1 px-3 rounded-md text-sm"
                             >
-                              View
+                              View 
                             </button>
                           </div>
                         )}
@@ -633,9 +615,8 @@ const StudentBoardingVerification = () => {
               {bookings.filter(b => b.status.toLowerCase() === 'pending').length}
             </div>
           </div>
-
-
           
+               
           <div className="bg-red-50 px-4 py-2 rounded-md flex items-center">
             <FaTimesCircle className="text-red-500 mr-2" />
             <div className="mr-3">Arrived At School:</div>

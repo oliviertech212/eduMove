@@ -69,7 +69,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
               <option value="Pending">Pending</option>
               <option value="Boarded">Boarded</option>
               <option value="Denied">Denied</option>
-              <option value="Arrived At Destination">Arrived</option>
+              <option value="Arrived At School">Arrived At School</option>
+              <option value="Arrived At Destination">Arrived At Destination</option>
             </select>
             <FaFilter className="absolute left-3 top-3 text-gray-400" />
           </div>

@@ -54,7 +54,7 @@ const TransporterDestinationSpotManagement = () => {
     if (timeSlotFilter) params.append('timeSlot', timeSlotFilter);
     return params.toString();
   };
-
+ 
   // Get all transporter bookings with filters
   const getAllTransporterBookings = async () => {
     const token = localStorage.getItem("token");
@@ -136,20 +136,20 @@ const TransporterDestinationSpotManagement = () => {
   };
 
   const handleConfirmDestinationArrival = async (scheduleId: string, timeslot: string) => {
+    const key = `${scheduleId}-${timeslot}`;
     const token = localStorage.getItem("token");
-    
+
     if (!token) {
       toast.error('Authentication token not found. Please log in again.');
       return;
     }
 
     try {
-      // Set loading state for this specific slot
-      setLoadarrival(prev => ({ ...prev, [scheduleId]: true }));
+      setLoadarrival(prev => ({ ...prev, [key]: true }));
 
       const response = await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}travels/${scheduleId}/arrived-at-destination?timeSlot=${timeslot}`,
-        {}, 
+        {},
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -158,7 +158,6 @@ const TransporterDestinationSpotManagement = () => {
         }
       );
 
-      // Handle success response
       if (response.data.status === "success") {
         toast.success(response.data.message);
         await getAllTransporterBookings();
@@ -174,8 +173,7 @@ const TransporterDestinationSpotManagement = () => {
         toast.error(error.response?.data?.message || 'Failed to confirm arrival. Please try again.');
       }
     } finally {
-      // Clear loading state for this specific slot
-      setLoadarrival(prev => ({ ...prev, [scheduleId]: false }));
+      setLoadarrival(prev => ({ ...prev, [key]: false }));
     }
   };
 
@@ -258,7 +256,7 @@ const TransporterDestinationSpotManagement = () => {
   const getallTravelSchedule = async () => {
     const user = localStorage.getItem("user");
     const savedUser = user ? JSON.parse(user) : null;
-    setLoadSchedule(false);
+    setLoadSchedule(true);
     
     if (!savedUser?._id) {
       console.warn('No user ID found');
@@ -297,6 +295,7 @@ const TransporterDestinationSpotManagement = () => {
         console.warn('No schedule data received');
         setTravelSchedule([]);
       }
+      
     } catch (error) {
       console.error('Error fetching travel schedules:', error);
       if (axios.isAxiosError(error)) {
@@ -321,6 +320,9 @@ const TransporterDestinationSpotManagement = () => {
         toast.error('Network error. Please check your connection');
       }
       setTravelSchedule([]);
+      setLoadSchedule(false)
+    } finally{
+      setLoadSchedule(false)
     }
   };
 
@@ -377,13 +379,13 @@ const TransporterDestinationSpotManagement = () => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery, statusFilter, dateFilter, destinationFilter, timeSlotFilter, scheduleIdFilter]);
 
-  if (loadschedule) {
-    return (
-      <div className="mx-auto mt-32 p-4 w-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-      </div>
-    );
-  }
+  // if (loadschedule) {
+  //   return (
+  //     <div className="mx-auto mt-32 p-4 w-full">
+  //       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="container mx-auto p-4">
@@ -433,8 +435,12 @@ const TransporterDestinationSpotManagement = () => {
             handleSubmitTripForm={handleSubmitTripForm}
            
           />
-          
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+
+          { loadschedule?
+                  <div className="flex justify-center items-center h-full">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                </div>:    
+            <div className="bg-white rounded-lg shadow overflow-hidden">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -543,6 +549,9 @@ const TransporterDestinationSpotManagement = () => {
               </tbody>
             </table>
           </div>
+          }
+          
+
         </div>
       )}
       
