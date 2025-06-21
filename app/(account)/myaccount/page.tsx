@@ -27,8 +27,7 @@ const Home = () => {
 
   return (
     <div>
-      {role === "student" && <StudentDashboard />}
-      {role === "parent" && <ParentDashboard />}
+
       {role === "school" && <SchoolDashboard />}
       {/* {role === "transporter" && <TransportCoDashboard />} */}
       {role === "transporter" && <TransporterDestinationSpotManagement/>}

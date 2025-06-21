@@ -47,7 +47,7 @@ const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => 
     price: 0,
     schedule: '',
     travelNumber: '',
-    status: 'Scheduled',
+    status: 'Pending',
     school: selectedSchool?._id || '',
     expectedArrivalTime: expectedArrivalTime || '',
     paymentNumber: '',
@@ -148,6 +148,7 @@ const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => 
           setSelectedSchedule(selectedS);
           setTravelForm(prev => ({
             ...prev,
+            schedule:selectedS._id,
             price : selectedS.price,
             departure: selectedS.departure,
             destination: selectedS.destination,
@@ -192,6 +193,7 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
           departure: travelForm.departure,
           destination: travelForm.destination,
           price: travelForm.price,
+          schedule: travelForm.schedule,
           transporter: transporter, 
           departureTime: departureTime,
           // departureTime: "18:30 PM",
@@ -200,7 +202,8 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
         guardian: travelForm.guardian,
         student: travelForm.student,
         school: travelForm.school,
-        status: "Scheduled",
+        // status: "Scheduled",
+        status: 'Pending',
         travelNumber: "TRV123456",
         expectedArrivalTime: expectedArrivalTime || "2025-05-02T00:00:00.000Z",
         paymentNumber:  travelForm.paymentNumber 

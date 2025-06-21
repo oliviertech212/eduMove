@@ -313,10 +313,17 @@ const roleBasedMenuItems = {
   ],
   //admin role 
   admin : [
-    { title: "Dashboard", url: "/myaccount", icon: FaHome },
+    // { title: "Dashboard", url: "/myaccount", icon: FaHome },
     // { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
     // { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
     {title:"User Management",url:"/myaccount/user-management",icon:FaUserGraduate},
+
+    { title: "Travel Schedule ", url: "/myaccount/travel-plans", icon: FaRoute },
+    { title: "Travel Schedules", url: "/myaccount/spot-destinations", icon: FaMapMarkerAlt },
+    { title: "Student's Boarding ", url: "/myaccount/students-boarding", icon: FaUsers },
+    { title: "Travel Schedules", url: "/myaccount/schooltravels", icon: FaMapMarkerAlt },
+    {title: "Student Arrival" , url:"/myaccount/school-arrival" , icon: FaUsers}
+
   ]
 };
 
