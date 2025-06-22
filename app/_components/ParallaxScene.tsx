@@ -549,7 +549,7 @@ export const ParallaxScene = () => {
                             },
                             {
                                 image: "/images/edumoveonbusandshowconnectionstudentandinternet.png",
-                                title: "Real-time Tracking",
+                                title: "Real-time Updates",
                                 description: "Stay connected with live updates and tracking of your child's journey."
                             },
                             {

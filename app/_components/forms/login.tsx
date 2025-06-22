@@ -1,5 +1,3 @@
-
-
 "use client";
 import { useState } from "react";
 import axios from "axios";
@@ -181,6 +179,20 @@ export default function Login() {
           >
             {loading ? "Logging in..." : "Login"}
           </Button>
+        </motion.div>
+
+        <motion.div
+          className="text-sm text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.4 }}
+        >
+          <Link
+            href="/forgot-password"
+            className="font-medium text-primary hover:underline"
+          >
+            Forgot Password?
+          </Link>
         </motion.div>
 
         {/* 

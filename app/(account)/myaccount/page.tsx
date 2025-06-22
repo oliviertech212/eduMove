@@ -1,15 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ParentDashboard from "@/app/_components/dasboard-overview/parent";
-import SchoolDashboard from "@/app/_components/dasboard-overview/school";
-import StudentDashboard from "@/app/_components/dasboard-overview/student";
-import TransportCoDashboard from "@/app/_components/dasboard-overview/transport-company";
-import TransporterSpotManagement from "./travel-schedule/page";
-import TransporterDestinationSpotManagement from "./spot-destinations/page";
-
-import TravelPlanManagement from "./travel-plans/page";
-import UserManagement from "./user-management/page";
+import AdminDashboard from "@/app/_components/dashboard-overview/AdminDashboard";
+import AuthorityDashboard from "@/app/_components/dashboard-overview/AuthorityDashboard";
+import SchoolDashboard from "@/app/_components/dashboard-overview/SchoolDashboard";
+import TransporterDashboard from "@/app/_components/dashboard-overview/TransporterDashboard";
 
 type Role = "student" | "parent" | "school" | "transporter"| "authority" | "admin";
 
@@ -29,11 +24,9 @@ const Home = () => {
     <div>
 
       {role === "school" && <SchoolDashboard />}
-      {/* {role === "transporter" && <TransportCoDashboard />} */}
-      {role === "transporter" && <TransporterDestinationSpotManagement/>}
-      {role === "authority" && <TravelPlanManagement />}
-      {/* {role === "admin" && <TransporterSpotManagement />} */}
-      {role === "admin" && <UserManagement />}
+      {role === "transporter" && <TransporterDashboard />}
+      {role === "authority" && <AuthorityDashboard />}
+      {role === "admin" && <AdminDashboard />}
       {!role && <p>Loading dashboard...</p>}
     </div>
   );

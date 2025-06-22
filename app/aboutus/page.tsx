@@ -102,7 +102,7 @@ const AboutUsPage = () => {
             >
               <FaUsers className="text-2xl text-blue-600 mr-3 mt-1" />
               <div>
-                <h3 className="text-lg font-semibold mb-2">Real-time Tracking</h3>
+                <h3 className="text-lg font-semibold mb-2">Real-time Updates</h3>
                 <p className="text-gray-600">
                   Live updates and notifications for parents and schools about student transportation.
                 </p>
