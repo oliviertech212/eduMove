@@ -26,3 +26,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 
 deployed version: [https://edu-move.vercel.app/]
+
+```bash
+You can explore the deployed version of the application here: https://edu-move.vercel.app/The frontend codebase is available on GitHub here: https://github.com/oliviertech212/eduMoveThe backend codebase is available on GitHub here: https://github.com/ericndungutse/edumove swagger documentation https://edumove.onrender.com/api-docs/
+
+
+```

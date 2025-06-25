@@ -35,22 +35,22 @@ const teamMembers: TeamMember[] = [
     id: 2,
     name: "NDUNGUTSE TUYIZERE Eric",
     role: "Software Engineer & System Analyst",
-    image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f3e8ff'/%3E%3Ccircle cx='200' cy='150' r='60' fill='%23e9d5ff'/%3E%3Crect x='120' y='230' width='160' height='120' rx='20' fill='%23e9d5ff'/%3E%3Ctext x='200' y='380' text-anchor='middle' font-family='Arial' font-size='16' fill='%236b7280'%3ENDUNGUTSE TUYIZERE Eric%3C/text%3E%3C/svg%3E",
-    phone: "+250 ",
+    image: "/images/team/eric.png",
+    phone: "+250 785 283 007",
     email: "eric@edumove.com",
     bio: "Experienced software engineer with a focus on building scalable, user-friendly applications. Driving the technical innovation behind EduMove's platform.",
     linkedin: "",
-    github: ""
+    github: "https://github.com/ericndungutse"
   },
   {
     id: 3,
     name: "Fiston DUSHIMIMANA",
     role: "Operations Manager",
-    image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23dbeafe'/%3E%3Ccircle cx='200' cy='150' r='60' fill='%23bfdbfe'/%3E%3Crect x='120' y='230' width='160' height='120' rx='20' fill='%23bfdbfe'/%3E%3Ctext x='200' y='380' text-anchor='middle' font-family='Arial' font-size='16' fill='%236b7280'%3EFiston DUSHIMIMANA%3C/text%3E%3C/svg%3E",
-    phone: "+250 7",
+    image: "/images/team/fiston.jpeg",
+    phone: "+250 784 834 058",
     email: "fiston@edumove.com",
     bio: "Dedicated to ensuring smooth operations and excellent customer service. Managing partnerships with schools and transport companies across Rwanda.",
-    linkedin: "https://linkedin.com/in/fiston-dushimimana"
+   
   }
 ];
 

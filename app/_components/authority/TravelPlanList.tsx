@@ -1,6 +1,6 @@
 
 'use client';
-import { FaCalendarAlt, FaMapMarkerAlt, FaEdit, FaTrash, FaPlus, FaClosedCaptioning } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaEdit, FaTrash, FaPlus, FaClosedCaptioning, FaSpinner } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -39,6 +39,8 @@ const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => 
   const [selectedSchedule, setSelectedSchedule] = useState<ScheduleType | null>(null);
   const [departureTime, setDepartureTime] = useState<string | null>(null);
   const [expectedArrivalTime, setExpectedArrivalTime] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showPaymentMessage, setShowPaymentMessage] = useState(true);
   const [travelForm, setTravelForm] = useState({
     plan: selectedPlan?._id || '',  
     departure: '',
@@ -165,11 +167,11 @@ const TravelPlanList = ({ travelPlans, onDelete, isadmin }: TravelPlanProps) => 
   }
   };
 
-
+ 
 const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   const token = localStorage.getItem("token");
-
+  setLoading(true);
   try {
     const selectedTransporter = transporters.find((t) => t._id === travelForm.transporter);
 
@@ -218,10 +220,17 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
 
     toast.success("Ticket booked successfully");
     setShowForm(false);
-  } catch (error) {
-    console.error("Error booking ticket:", error);
+  } catch (error:any) {
+    setLoading(false);
+    console.error("Error booking ticket:", error.response.data.message);
+    if (error.response.data.message==="Payment not completed. Please, dial *182*7*1# to complete payment."){
+      toast.success("Travel has been booked successfully. if not paid, Please, dial *182*7*1# to complete payment.");
+    }else{
     toast.error("Failed to book ticket");
-  }
+  } 
+}finally{
+  setLoading(false);
+}
 };
 
   
@@ -260,6 +269,8 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
   return (
     <div>
       {/* Existing travel plan rendering code... */}
+
+      
       
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
@@ -439,6 +450,18 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
                 />
               </div>
 
+              {
+                loading && (
+                  <div className="mb-4 bg-primary text-center text-white p-4 rounded-md">
+                    <p className="text-sm ">
+                      follow the instructions on your phone to complete the payment. 
+                      <br />
+                      after payment check your email to get student travell number
+                      </p>
+                  </div>
+                )
+              }
+
               {/* Guardian Details */}
               <div className="mb-4">
                 <h4 className="text-lg font-semibold mb-2">Guardian Details</h4>
@@ -520,9 +543,10 @@ const handleSubmitTravelForm = async (e: React.FormEvent<HTMLFormElement>) => {
                 </button>
                 <button 
                   type="submit" 
+                  disabled={loading}
                   className="px-4 py-2 bg-primary text-white rounded-md"
                 >
-                  Book Ticket
+                 {loading ? <FaSpinner className="animate-spin" /> : 'Book Ticket'}
                 </button>
               </div>
             </form>

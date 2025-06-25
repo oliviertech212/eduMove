@@ -6,6 +6,7 @@ import AuthorityDashboard from "@/app/_components/dashboard-overview/AuthorityDa
 import SchoolDashboard from "@/app/_components/dashboard-overview/SchoolDashboard";
 import TransporterDashboard from "@/app/_components/dashboard-overview/TransporterDashboard";
 import TravelPlanManagement from "@/app/_components/travel-plans";
+import TransporterDestinationSpotManagement from "./spot-destinations/page";
 
 type Role = "student" | "parent" | "school" | "transporter"| "authority" | "admin";
 
@@ -25,7 +26,7 @@ const Home = () => {
     <div> 
 
       {role === "school" && <SchoolDashboard />}
-      {role === "transporter" && <TransporterDashboard />}
+      {role === "transporter" && <TransporterDestinationSpotManagement />}
       {role === "authority" && <TravelPlanManagement isadmin={true}/>}
       {/* <AuthorityDashboard /> */}
       {role === "admin" && <AdminDashboard />}
