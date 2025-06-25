@@ -10,6 +10,7 @@ import { TravelBooking } from "@/types";
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRouter } from "next/navigation";
+import { TeamSection } from "./TeamSection";
 
 const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -56,7 +57,7 @@ export const ParallaxScene = () => {
     };
 
     return (
-        <Parallax pages={5} ref={ref} className="w-full h-screen overflow-hidden">
+        <Parallax pages={6} ref={ref} className="w-full h-screen overflow-hidden">
             <Header />
             
             {/* Hero Section */}
@@ -131,6 +132,14 @@ export const ParallaxScene = () => {
                                 <Link href="/plans" className="flex items-center gap-3 hover:translate-z-5">
                                     Book a Ticket
                                 </Link>
+                            </motion.button>
+                            <motion.button 
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => ref.current?.scrollTo(3)}
+                                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-3 md:px-8 py-3 rounded-full md:text-lg font-semibold transition-all border border-white/30"
+                            >
+                                Meet Our Team
                             </motion.button>
                         </motion.div>
                         
@@ -522,9 +531,22 @@ export const ParallaxScene = () => {
                 </motion.div>
             </ParallaxLayer>
 
-
-             <ParallaxLayer
+            {/* Team Section */}
+            <ParallaxLayer
                 offset={3}
+                speed={0.5}
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <TeamSection onNavigate={(section) => ref.current?.scrollTo(section)} />
+            </ParallaxLayer>
+
+            {/* Your Expectations Section */}
+            <ParallaxLayer
+                offset={4}
                 speed={0.2}
                 style={{
                     backgroundColor: '#ffffff',
@@ -625,7 +647,7 @@ export const ParallaxScene = () => {
 
             {/* Network Section */}
             <ParallaxLayer
-                offset={4}
+                offset={5}
                 speed={0.5}
                 style={{
                     display: 'flex',
