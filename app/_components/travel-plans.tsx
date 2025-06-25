@@ -123,14 +123,24 @@ const TravelPlanManagement = (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Travel Plan Management</h1>
-        <div className="bg-white p-4 rounded-lg shadow mb-6">
+       {
+        isadmin &&  <button 
+        onClick={() => setIsFormOpen(true)} 
+        className="bg-primary text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
+      >
+        <FaPlus className="mr-2" /> Create New Travel Plan
+      </button>
+       }
+
+             {/* Filters */}
+      <div className="bg-white p-4 rounded-lg shadow mb-6">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center">
             <FaFilter className="text-gray-400 mr-2" />
             <span className="font-medium">Filters:</span>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
 
             
             <div>
@@ -158,10 +168,8 @@ const TravelPlanManagement = (
           </div>
         </div>
       </div>
-       
       </div>
 
-      {/* Filters */}
 
 
       {/* Travel Plan Form Modal */}
